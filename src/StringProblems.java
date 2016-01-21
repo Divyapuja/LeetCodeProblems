@@ -104,4 +104,111 @@ public class StringProblems {
         
         return val;
     }
+	
+	public boolean isPalindrome(String s) {
+        if(s.equals(""))
+        {
+            return true;
+        }
+        
+        String forward = new String("");
+        String backward = new String("");
+        
+        s=alphaNumericValue(s);
+        
+        int mid = s.length()/2;
+        
+        for(int i=0; i<mid; i++)
+        {
+            forward+=s.charAt(i);
+        }
+        for(int i=s.length()-1; i>mid; i--)
+        {
+            backward+=s.charAt(i);
+        }
+        if(forward.toLowerCase().equals(backward.toLowerCase()))
+        {
+            return true;
+        }
+        
+        return false;
+    } 
+	
+	public boolean isPalindrome1(String s) {
+        if(s == null)
+        {
+        	return false;
+        }
+        String forward = new String("");
+        String backward = new String("");
+        
+        int left=0;
+        int right=s.length()-1;
+        int i=0;
+        while(left<right)
+        {
+        	if(!isAlphaNumericValue(s.charAt(left)))
+        	{
+        		left++;
+        	}
+        	else if(!isAlphaNumericValue(s.charAt(right)))
+        	{
+        		right--;
+        	}
+        	else if(Character.toLowerCase(s.charAt(left))!=Character.toLowerCase(s.charAt(right)))
+        	{
+        		return false;
+        	}
+        	else
+        	{
+        		left++;
+        		right--;
+        	}
+        }
+        
+        
+        return true;
+    } 
+
+	public String alphaNumericValue(String s)
+	{
+		String s1=new String("");
+		for(int i=0; i<s.length(); i++)
+		{
+			if( (s.charAt(i) >= 48 && s.charAt(i)<=57) || 
+				(s.charAt(i) >= 65 && s.charAt(i)<=90) || 
+				(s.charAt(i) >= 97 && s.charAt(i)<=122))
+			{
+				s1+=s.charAt(i);
+			}
+		}
+		
+		return s1;
+	}
+
+	public boolean isAlphaNumericValue(char c)
+	{
+			if( (c >= 48 && c<=57) || 
+				(c >= 65 && c<=90) || 
+				(c >= 97 && c<=122))
+			{
+				return true;
+			}
+		
+		
+		return false;
+	}
+	public static void main(String args[])
+	{
+		/*StringProblems obj = new StringProblems();
+		
+		String test1 = "A man, a plan, a canal: Panama";
+		String test2="race a car";
+		
+		System.out.println(obj.alphaNumericValue(test1));
+		System.out.println(obj.isPalindrome1(test1));*/
+		
+		
+		
+	}
 }

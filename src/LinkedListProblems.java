@@ -1,6 +1,6 @@
 
 public class LinkedListProblems {
-	public static ListNode reverseList(ListNode head) {
+	public  ListNode reverseList(ListNode head) {
 	    ListNode prev = null;
 	 	ListNode temp = null;
 	 	if(head == null)
@@ -19,7 +19,7 @@ public class LinkedListProblems {
     	
     }
 	
-	public static ListNode deleteDuplicates(ListNode head) {
+	public ListNode deleteDuplicates(ListNode head) {
 
 		 if(head == null)
 		 {
@@ -43,7 +43,7 @@ public class LinkedListProblems {
 		 return origHead;
 	    }
 	
-	public static ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+	public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
 		 
 	 	ListNode tempOrig1 = l1;
 	 	ListNode tempOrig2 = l2;
@@ -131,7 +131,7 @@ public class LinkedListProblems {
         return null;
     } 
  
-	 public static ListNode mergeTwoLists1(ListNode l1, ListNode l2) {
+	 public ListNode mergeTwoLists1(ListNode l1, ListNode l2) {
 		 	if (l1 == null) return l2;
 		    if (l2 == null) return l1;
 		    
@@ -142,5 +142,70 @@ public class LinkedListProblems {
 	
 		    return head;
 	 }
-
+	 
+	 public boolean isPalindrome(ListNode head) {
+	        	if(head == null || head.next == null)
+	        	{
+	        		return true;
+	        	}
+	        	ListNode temp=head;
+	        	int size=0;
+	        	while(temp!=null)
+	        	{
+	        		temp=temp.next;
+	        		size++;
+	        	}
+	        	int mid = size/2;
+	        	
+	        	if(size%2 == 0)
+	        	{
+	        		mid=mid-1;;
+	        	}
+	        	
+	        	ListNode rHead=null;
+		        temp = head;
+		        int i=0;
+		        while(temp!=null)
+		        {
+		        	if(i==mid)
+		        	{
+		        		rHead=temp;
+		        	}
+		        	temp=temp.next;
+		        	i++;
+		        }
+		        
+		        
+		        rHead = reverseList(rHead);
+		        
+		        while(head!=null && rHead!=null)
+		        {
+		        	if(head.val != rHead.val)
+		        	{
+		        		return false;
+		        	}
+		        	head = head.next;
+		        	rHead = rHead.next;
+		        	
+		        }
+	        return true;
+	 }
+	 
+	 public static void main(String args[])
+	 {
+		 	LinkedListProblems obj = new LinkedListProblems();	
+		 
+		 	ListNode head = new ListNode(2);
+			ListNode head1 = new ListNode(2);
+			ListNode head2 = new ListNode(3);
+			ListNode head3 = new ListNode(2);
+			ListNode head4 = new ListNode(1);
+			head.next = head1;
+			head1.next=head2;
+			head2.next=head3;
+			head3.next=head4;
+			head4.next = null;
+			
+			System.out.println(obj.isPalindrome(head));
+	 }
 }
