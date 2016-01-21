@@ -157,17 +157,17 @@ public class LinkedListProblems {
 	        	}
 	        	int mid = size/2;
 	        	
-	        	if(size%2 == 0)
+	        	/*if(size%2 == 0)
 	        	{
 	        		mid=mid-1;;
-	        	}
+	        	}*/
 	        	
 	        	ListNode rHead=null;
 		        temp = head;
 		        int i=0;
 		        while(temp!=null)
 		        {
-		        	if(i==mid)
+		        	if(i<mid)
 		        	{
 		        		rHead=temp;
 		        	}
@@ -195,16 +195,16 @@ public class LinkedListProblems {
 	 {
 		 	LinkedListProblems obj = new LinkedListProblems();	
 		 
-		 	ListNode head = new ListNode(2);
+		 	ListNode head = new ListNode(1);
 			ListNode head1 = new ListNode(2);
-			ListNode head2 = new ListNode(3);
-			ListNode head3 = new ListNode(2);
-			ListNode head4 = new ListNode(1);
+			ListNode head2 = new ListNode(2);
+			ListNode head3 = new ListNode(1);
+			//ListNode head4 = new ListNode(1);
 			head.next = head1;
 			head1.next=head2;
 			head2.next=head3;
-			head3.next=head4;
-			head4.next = null;
+			head3.next=null;
+			//head4.next = null;
 			
 			System.out.println(obj.isPalindrome(head));
 	 }
