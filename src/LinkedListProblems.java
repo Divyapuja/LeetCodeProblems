@@ -190,22 +190,107 @@ public class LinkedListProblems {
 		        }
 	        return true;
 	 }
+	 public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+	        if(headA == null || headB == null){return null;}
+	        
+	        int sizeA = returnSize(headA);
+	        int sizeB = returnSize(headB);
+	        int min = Math.min(sizeA, sizeB);
+	        
+	        ListNode tempNodeA = headA;
+	        ListNode tempNodeB = headB;
+	        
+	        
+	        while(sizeA-- > min)
+	        {
+	        	if(tempNodeA!=null)
+		        {
+	        		tempNodeA = tempNodeA.next;
+	        		
+		        }
+	        }
+	        
+	        while(sizeB-- > min)
+	        {
+	        	if(tempNodeB!=null)
+	        	{
+	        		tempNodeB = tempNodeB.next;
+	        	}
+	        }
+	        while(tempNodeA!=null)
+	        {
+	        	if(tempNodeA == tempNodeB) return tempNodeA;
+	        	tempNodeA = tempNodeA.next;
+	        	tempNodeB = tempNodeB.next;
+	        }
+	         return null;
+	    }
+	 public int returnSize(ListNode head)
+	 {
+		 if(head == null){return 0;}
+		 int size=0;
+		 while(head!=null)
+	     {
+	            head = head.next;
+	            size++;
+	     }
+		 
+		 return size;
+	 }
 	 
+	    public int returnLastElement(ListNode head)
+	    {
+	        if(head == null){return 0;}
+	        while(head!=null)
+	        {
+	            if(head.next == null)
+	            {
+	                return head.val;
+	            }
+	            head = head.next;
+	        }
+	        
+	        return 0;
+	    }
+	 
+	    public boolean hasCycle(ListNode head) {
+	    	if(head == null || head.next == null){return false;}
+	        ListNode slow = head;
+	        ListNode fast = head;
+	        
+	        while(fast!=null && fast.next!=null)
+	        {
+	        	slow = slow.next;
+	            fast = fast.next.next;
+	        	if(slow == fast)
+	            {
+	                return true;
+	            }
+	        	
+	        	
+	        }
+	        
+	        return false;
+	    }
 	 public static void main(String args[])
 	 {
 		 	LinkedListProblems obj = new LinkedListProblems();	
 		 
 		 	ListNode head = new ListNode(1);
 			ListNode head1 = new ListNode(2);
-			ListNode head2 = new ListNode(2);
-			ListNode head3 = new ListNode(1);
-			//ListNode head4 = new ListNode(1);
+			ListNode head2 = new ListNode(3);
+			ListNode head3 = new ListNode(-4);
+			ListNode head4 = new ListNode(5);
 			head.next = head1;
 			head1.next=head2;
 			head2.next=head3;
-			head3.next=null;
-			//head4.next = null;
+			head3.next=head4;
+			head4.next = null;
 			
-			System.out.println(obj.isPalindrome(head));
+			ListNode tail = new ListNode(12);
+			tail.next = null;
+			//tail1.next=head4;
+			
+			System.out.println(obj.hasCycle(head));
 	 }
 }

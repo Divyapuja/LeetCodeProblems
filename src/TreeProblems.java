@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class TreeProblems {
 	
@@ -218,6 +221,16 @@ public class TreeProblems {
 	           && isSymmetric1(node1.right,node2.left);
 	}
 	
+	public List<List<Integer>> levelOrder(TreeNode root) {
+        List<List<Integer>> obj = new ArrayList<List<Integer>>();
+        /*if(root == null){return }
+        if(root != null)
+        {
+        	
+        	
+        }*/
+       return obj;
+    }
 	
 	public static void main(String args[])
 	{
