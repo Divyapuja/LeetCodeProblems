@@ -266,12 +266,102 @@ public class LinkedListProblems {
 	            {
 	                return true;
 	            }
-	        	
-	        	
 	        }
 	        
 	        return false;
 	    }
+	    
+	    public ListNode sortList(ListNode head)
+	    {
+	        if(head == null || head.next == null) return head;
+	        
+	        ListNode slow = head;
+	        ListNode fast = head;
+	        while(fast.next!=null && fast.next.next!=null)
+	        {
+	            slow = slow.next;
+	            fast = fast.next.next;
+	        }
+	        ListNode slowNext = slow.next;
+	        slow.next = null;
+	        
+	        ListNode node1 = sortList(head);
+	        ListNode node2 = sortList(slowNext);
+	        return merge(node1, node2);
+	    }
+	    public ListNode merge(ListNode node1, ListNode node2)
+	    {
+	    	ListNode head = new ListNode(0);
+	    	ListNode curr = head;
+	    	while(node1 !=null && node2!=null)
+	    	{
+	    		if(node1.val < node2.val)
+	    		{
+	    			curr.next = node1;
+	    			node1 = node1.next;
+	    		}
+	    		else
+	    		{
+	    			curr.next = node2;
+	    			node2 = node2.next;
+	    		}
+	    		curr = curr.next;
+	    	}
+	    	
+	    	if(node1 != null) curr.next = node1;
+	        if(node2 != null) curr.next = node2;
+	        
+	    	return head.next;
+	    	
+	    }
+	    
+	    public ListNode rotateRight(ListNode head, int k) {
+	        
+	        int length =0;
+	        ListNode tempHead = head;
+	        while(tempHead!=null)
+	        {
+	        	tempHead = tempHead.next;
+	            length++;
+	        }
+	        int rSize = length+k;
+	        
+	        //connect head with tail
+	        ListNode tempHead1=head;
+	        ListNode tempHead2=head;
+	        while(tempHead1!=null && tempHead1.next!=null)
+	        {
+	        	tempHead1 = tempHead1.next;
+	        }
+	        if(tempHead1!=null)
+	        {
+	        	tempHead1.next = tempHead2;
+	        }
+	        
+	        for(int i=0; i<rSize-1;i++)
+	        {
+	        	tempHead2 = tempHead2.next;
+	        }
+	        ListNode tempHead3= tempHead2.next;
+	        ListNode tempHead4= tempHead2.next;
+	        for(int i=0; i<length-1;i++)
+	        {
+	        		tempHead3 = tempHead3.next;
+	        }
+	        if(tempHead3!=null)
+	        {
+	        	tempHead3.next = null;
+	        }
+	        
+	        head=tempHead4;
+	        
+	        
+	        return head;
+	    }
+	
+		
+	  
+	    
 	 public static void main(String args[])
 	 {
 		 	LinkedListProblems obj = new LinkedListProblems();	
@@ -279,18 +369,21 @@ public class LinkedListProblems {
 		 	ListNode head = new ListNode(1);
 			ListNode head1 = new ListNode(2);
 			ListNode head2 = new ListNode(3);
-			ListNode head3 = new ListNode(-4);
+			ListNode head3 = new ListNode(4);
 			ListNode head4 = new ListNode(5);
 			head.next = head1;
 			head1.next=head2;
-			head2.next=head3;
+			head2.next=null;
 			head3.next=head4;
 			head4.next = null;
 			
-			ListNode tail = new ListNode(12);
-			tail.next = null;
-			//tail1.next=head4;
-			
-			System.out.println(obj.hasCycle(head));
+			//head = obj.sortList(head);
+			head = obj.rotateRight(head, 2);
+			while(head!=null)
+			{
+				System.out.println(head.val);
+				head=head.next;
+			}
+			//System.out.println(obj.sortList(head));
 	 }
 }

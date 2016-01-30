@@ -1,5 +1,11 @@
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 
 public class TreeProblems {
@@ -232,25 +238,104 @@ public class TreeProblems {
        return obj;
     }
 	
+	public boolean hasPathSum(TreeNode root, int sum) {
+        if(root == null)
+        {
+            return false;
+        }
+        else if(root.val == sum && root.left == null & root.right == null )
+        {
+        	return true;
+        }
+        else
+        {
+        	return hasPathSum(root.left, sum -root.val) ||hasPathSum(root.right, sum -root.val);
+        }
+        
+    }
+	public TreeNode lowestCommonAncestor1(TreeNode root, TreeNode p, TreeNode q) {
+        
+        if(root == null)
+		{
+			return null;
+		}
+        if(root == p)
+        {
+        	return p;
+        }
+        if(root == q)
+        {
+        	return q;
+        }
+        TreeNode left = lowestCommonAncestor1(root.left, p, q);
+        TreeNode right = lowestCommonAncestor1(root.right, p, q);
+        
+        if(left == null && right == null)
+        {
+        	return null;
+        }
+        if(left != null && right == null)
+        {
+        	return left;
+        }
+        if(right != null && left == null)
+        {
+        	return right;
+        }
+        return root;
+    }
+	public TreeNode lowestCommonAncestor2(TreeNode root, TreeNode p, TreeNode q) {
+        Map<TreeNode, TreeNode> parent = new HashMap<TreeNode, TreeNode>();
+        Deque<TreeNode> stack = new ArrayDeque<TreeNode>();
+        parent.put(root, null);
+        stack.push(root);
+
+        while (!parent.containsKey(p) || !parent.containsKey(q)) {
+            TreeNode node = stack.pop();
+            if (node.left != null) {
+                parent.put(node.left, node);
+                stack.push(node.left);
+            }
+            if (node.right != null) {
+                parent.put(node.right, node);
+                stack.push(node.right);
+            }
+        }
+        Set<TreeNode> ancestors = new HashSet<TreeNode>();
+        while (p != null) {
+            ancestors.add(p);
+            p = parent.get(p);
+        }
+        	while (!ancestors.contains(q))
+        		q = parent.get(q);
+        	return q;
+    }
+	
 	public static void main(String args[])
 	{
-		TreeNode root=new TreeNode(2);
-		root.left = new TreeNode(3);
-		root.right = new TreeNode(3);
-		root.left.left = new TreeNode(4);
-		root.left.right = new TreeNode(5);
-		root.right.left = new TreeNode(4);
-		root.right.right = new TreeNode(5);
+		TreeNode root=new TreeNode(5);
+		root.left = new TreeNode(4);
+		root.right = new TreeNode(8);
+		root.left.left = new TreeNode(11);
+		root.left.left.left = new TreeNode(7);
+		root.left.left.right = new TreeNode(2);
+		root.right.left = new TreeNode(13);
+		root.right.right = new TreeNode(4);
+		root.right.right.right = new TreeNode(1);
 		
 		
 		TreeProblems obj = new TreeProblems();
-		System.out.println(obj.isSymmetric1(root));
+		//System.out.println(obj.isSymmetric1(root));
+		
+		
 		
 		TreeNode root1=new TreeNode(1);
-		root1.left = null;
-		root1.right = new TreeNode(2);
+		//TreeNode root1=new TreeNode(1);
 		
-		System.out.println(obj.isSymmetric1(root1));
+		//System.out.println(obj.isSymmetric1(root1));
+		//System.out.println(obj.hasPathSum(root,27));
+		System.out.println(obj.lowestCommonAncestor1(root, root.left.left.left, root.left.left.right).val);
+		System.out.println(obj.lowestCommonAncestor2(root, root.left.left.left, root.left.left.right).val);
 		
 	}
 	

@@ -1,5 +1,7 @@
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Stack;
+import java.util.StringTokenizer;
 
 
 public class StringProblems {
@@ -198,16 +200,266 @@ public class StringProblems {
 		
 		return false;
 	}
+	//{"a", "a", "b"} return "a"
+	//{"a","a"} return "a"
+	//{"ac", "ac", "a", "a"} return "a"
+	public String longestCommonPrefix(String[] strs) {
+		String result = new String("");
+		if(strs.length == 0)
+		{
+			return "";
+		}
+		if(strs.length == 1)
+		{
+			return strs[0];
+		}
+		if(strs.length>1)
+		{
+			Arrays.sort(strs);
+			//compare the first and the last string
+			String first = new String(strs[0]);
+			String last = new String(strs[strs.length-1]);
+			
+			if(first.length()>last.length())
+			{
+				String temp =first;
+				first = last;
+				last = temp;
+			}
+			
+			for(int i=0;i<first.length();i++)
+			{
+				if(first.charAt(i)==last.charAt(i))
+				{
+					result = result+String.valueOf(first.charAt(i));
+				}
+				else
+				{
+					break;
+				}
+			}
+			
+		}
+    	return result;
+    }
+	public String addBinary(String a, String b) {
+    
+		if(a.length()==0 && b.length()==0)
+		{
+			return "";
+		}
+		else if(a.length()==0 && b.length()>0)
+		{
+			return b;
+		}
+		else if(a.length()>0 && b.length()==0)
+		{
+			return a;
+		}
+		else
+		{
+			int dec1 = conversionBinaryToDecimal(Integer.parseInt(a));
+			int dec2 = conversionBinaryToDecimal(Integer.parseInt(b));
+			return String.valueOf(conversionDecimalToBinary(dec1+dec2));
+			
+		}
+		
+	}
+	public int conversionBinaryToDecimal(int bin)
+	{
+		int dec=0;
+		int i=0;
+		while(bin!=0)
+		{
+			int mod = bin%10;
+			dec = dec+ mod*(int)Math.pow(2, i);
+			i++;
+			bin = bin/10;
+		}
+		return dec;
+	}
+	public int conversionDecimalToBinary(int dec)
+	{
+		int bin=0;
+		int i=0;
+		while(dec!=0)
+		{
+			int mod = dec%2;
+			bin = bin + mod*(int)Math.pow(10, i);
+			i++;
+			dec = dec/2;
+		}
+		return bin;
+	}
+	public String addBinary1(String a, String b) {
+		
+		if(a.length()==0 && b.length()==0)
+		{
+			return "";
+		}
+		else if(a.length()==0 && b.length()>0)
+		{
+			return b;
+		}
+		else if(a.length()>0 && b.length()==0)
+		{
+			return a;
+		}
+		else
+		{
+			String result = new String("");
+			int carry =0;
+			int aLen = a.length();
+			int bLen = b.length();
+			int aNum=0;
+			int bNum=0;
+			int cNum =0;
+			while(Math.max(aLen, bLen)>0)
+			{
+				if(aLen>0)
+				{
+					aNum = a.charAt(aLen-1)-'0';
+					aLen--;
+				}
+				else
+				{
+					aNum=0;
+				}
+				if(bLen>0)
+				{
+					bNum = b.charAt(bLen-1)-'0';
+					bLen--;
+				}
+				else
+				{
+					bNum =0;
+				}
+				cNum = aNum + bNum +carry;
+				result = result+String.valueOf(cNum%2);
+				carry = cNum/2;
+			}
+			if(carry ==1)
+			{
+				result = result+String.valueOf(1);
+			}
+			
+			String result1 = new String("");
+			for(int i=result.length()-1; i>=0;i--)
+			{
+				result1=result1+String.valueOf(result.charAt(i));
+			}
+			
+			return result1;
+		}
+	}
+	
+	public boolean isValid(String s) {
+		Stack<String> arr = new Stack<String>();
+		int errCount=0;
+        if(s.length()>0)
+        {
+        	for(int i=0; i<s.length();i++)
+        	{
+        		if(s.charAt(i)== '(' || s.charAt(i)== '[' ||s.charAt(i)== '{')
+        		{
+        			arr.push(String.valueOf(s.charAt(i)));
+        		}
+        		else if(s.charAt(i)== ')')
+        		{
+        			errCount++;
+        			if(!arr.empty())
+        			{
+	        			if(arr.peek().equals("("))
+	        			{
+	        				arr.pop();
+	        				errCount--;
+	        			}
+        			}
+        		}
+        		else if(s.charAt(i)== ']' )
+        		{
+        			errCount++;
+        			if(!arr.empty())
+        			{
+	        			if(arr.peek().equals("["))
+	        			{
+	        				arr.pop();
+	        				errCount--;
+	        			}
+        			}
+        		}
+        		else if(s.charAt(i)== '}')
+        		{
+        			errCount++;
+        			if(!arr.empty())
+        			{
+	        			if(arr.peek().equals("{"))
+	        			{
+	        				arr.pop();
+	        				errCount--;
+	        			}
+        			}
+        		}
+        	}
+        }
+    	if(arr.empty() && errCount == 0)
+    	{
+    		return true;
+    	}
+    	return false;
+    }
+	//compare version 0.1, 0.0.1, 0.0.0.2
+	public int compareVersion(String version1, String version2) {
+    
+		
+		if(version1.length()>0 && version2.length()>0)
+		{
+			StringTokenizer st1 = new StringTokenizer(version1,".");
+			StringTokenizer st2 = new StringTokenizer(version2,".");
+			while(st1.hasMoreElements() || st2.hasMoreElements())
+			{
+				int token1=0, token2=0;
+				if(st1.hasMoreElements())
+				{
+				token1 = Integer.parseInt((String) st1.nextElement());
+				}
+				else
+				{
+					token1=0;
+				}
+				
+				if(st2.hasMoreElements())
+				{
+					token2 = Integer.parseInt((String) st2.nextElement());
+				}
+				else
+				{
+					token2=0;
+				}
+				
+				if(token1>token2) return 1;
+				if(token1<token2) return -1;
+			}
+		}
+		return 0;
+    }
 	public static void main(String args[])
 	{
-		/*StringProblems obj = new StringProblems();
+		StringProblems obj = new StringProblems();
 		
-		String test1 = "A man, a plan, a canal: Panama";
+		/*String test1 = "A man, a plan, a canal: Panama";
 		String test2="race a car";
 		
 		System.out.println(obj.alphaNumericValue(test1));
-		System.out.println(obj.isPalindrome1(test1));*/
+		System.out.println(obj.isPalindrome1(test1));
 		
+		String[] arr = {"pot","pottery","potato"};
+		System.out.println(obj.longestCommonPrefix(arr));*/
+		//System.out.println(obj.conversionBinaryToDecimal(11));
+		//System.out.println(obj.conversionDecimalToBinary(3));
+		//System.out.println(obj.addBinary1("10100000100100110110010000010101111011011001101110111111111101000000101111001110001111100001101","110101001011101110001111100110001010100001101011101010000011011011001011101111001100000011011110011"));
+		//System.out.println(obj.isValid("(])"));
+		System.out.println(obj.compareVersion("0.0.0.0.1", "0.0.1"));
 		
 		
 	}
