@@ -81,18 +81,9 @@ public class TreeProblems {
     					{
     						return true;
     					}
-    					else{
-    						return false;
-    					}
-    				}
-    				else{
-    					return false;
     				}
             }
-            else
-            {
-                    return false;
-            }
+		return false;
 			
     }
 	public boolean isBalanced(TreeNode root) {
@@ -148,11 +139,7 @@ public class TreeProblems {
         			{
         				return true;
         			}
-        	
-        	
-		
        }
-        
         return false;
     }
 	public boolean checkMirrorValidity(TreeNode left, TreeNode right)
