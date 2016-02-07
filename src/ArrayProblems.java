@@ -543,6 +543,125 @@ public class ArrayProblems {
 	        }
 	        return threesumarray;
 	    }
+	    public void setZeroes(int[][] matrix) {
+	    	Hashtable<Integer,Integer> lookup=new Hashtable<Integer,Integer>();
+	        int m=matrix.length;
+	        int n=matrix[0].length;
+	        int count =0;
+	        for(int i=0; i<m; i++)
+	        {
+	            for(int j=0; j<n; j++)
+	            {
+	            	count++;
+	                if(matrix[i][j]==0)
+	                {
+	                    lookup.put(count, 0);
+	                }
+	            }
+	        }
+	        count=0;
+	        for(int i=0; i<m; i++)
+	        {
+	            for(int j=0; j<n; j++)
+	            {
+	            	count++;
+	            	int tempi=i; int tempj=j;
+	            	if(lookup.containsKey(count))
+	            	{
+		                if(lookup.get(count)==0)
+		                {
+		                    
+		                    while(j+1<n)
+		                    {
+		                    	matrix[i][j+1]=0;
+		                    	j++;
+		                    }
+		                    i=tempi; j=tempj;
+		                    while(j-1>=0)
+		                    {
+		                    	matrix[i][j-1]=0;
+		                    	j--;
+		                    }
+		                    i=tempi; j=tempj;
+		                    while(i+1<m)
+		                    {
+		                    	matrix[i+1][j]=0;
+		                    	i++;
+		                    }
+		                    i=tempi; j=tempj;
+		                    while(i-1>=0)
+		                    {
+		                    	matrix[i-1][j]=0;
+		                    	i--;
+		                    }
+		                }
+	            	}
+	            	i=tempi;
+                    j=tempj;
+	            }
+	        }
+	        
+	    }
+	    //put markers on first column and row
+	    //check from next column and row
+	    //put zeros accordingly
+	    //if a zero is in 1st column or row convert row or column to zero 
+	    public void setZeroes1(int[][] matrix) {
+	        boolean fr = false,fc = false;
+	        for(int i = 0; i < matrix.length; i++) {
+	            for(int j = 0; j < matrix[0].length; j++) {
+	                if(matrix[i][j] == 0) {
+	                    if(i == 0) fr = true;
+	                    if(j == 0) fc = true;
+	                    matrix[0][j] = 0;
+	                    matrix[i][0] = 0;
+	                }
+	            }
+	        }
+	        for(int i = 1; i < matrix.length; i++) {
+	            for(int j = 1; j < matrix[0].length; j++) {
+	                if(matrix[i][0] == 0 || matrix[0][j] == 0) {
+	                    matrix[i][j] = 0;
+	                }
+	            }
+	        }
+	        if(fr) {
+	            for(int j = 0; j < matrix[0].length; j++) {
+	                matrix[0][j] = 0;
+	            }
+	        }
+	        if(fc) {
+	            for(int i = 0; i < matrix.length; i++) {
+	                matrix[i][0] = 0;
+	            }
+	        }
+	    }
+	    
+	    public int searchInsert(int[] nums, int target) {
+	        int ret = binarySearch(0, nums.length, nums, target);
+	    	
+	    	return ret;
+	    }
+	    public int binarySearch(int low, int high, int[] nums, int target)
+	    {
+	    	if(low < high)
+	    	{
+	    		int mid = (low+high)/2;
+	    		if(nums[mid] == target)
+	    		{
+	    			return mid;
+	    		}
+	    		else if(nums[mid]<target)
+	    		{
+	    			return binarySearch(mid+1, high, nums, target);
+	    		}
+	    		else
+	    		{
+	    			return binarySearch(low, mid, nums, target);
+	    		}
+	    	}
+	    	return 0;
+	    }
 	   
 	public static void main(String args[])
 	{
@@ -578,10 +697,20 @@ public class ArrayProblems {
 		//obstacleGrid[0][0]=1;
 		//System.out.println(obj.uniquePathsWithObstacles(obstacleGrid));
 		
-		int[] nums={0,0};
-		System.out.println(obj.threeSum(nums));
+		//int[] nums={0,0};
+		//System.out.println(obj.threeSum(nums));
 		
-		
+		/*int[][] matrix={{1,2,3},{4,5,5},{0,2,5}};
+		obj.setZeroes1(matrix);
+		for(int i=0; i<3; i++)
+        {
+            for(int j=0; j<3; j++)
+            {
+            	System.out.println(matrix[i][j]);
+            }
+        }*/
+		int[] nums={1,3,5,6};
+		System.out.println(obj.searchInsert(nums,8));
 	}
 	
 }
