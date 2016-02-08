@@ -443,6 +443,34 @@ public class StringProblems {
 		}
 		return 0;
     }
+	public String longestPalindrome(String s) {
+	    if (s == null || s.length() == 0)
+	        return s;
+	    String longest = s.substring(0, 1);
+	    for (int i = 0; i < s.length(); i++) {
+	        if(s.length()-i <longest.length()/2)
+	            break;
+	        String oddPal = findLengthofPalindrome(s, i, i);
+	        if (longest.length() < oddPal.length()) {
+	            longest = oddPal;
+	        }
+
+	        String evenPal = findLengthofPalindrome(s, i, i + 1);
+	        if (longest.length() < evenPal.length()) {
+	            longest = evenPal;
+	        }
+	    }
+	    return longest;
+
+	}
+
+	private String findLengthofPalindrome(String s, int left, int right) {
+	    while (left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right)) {
+	        left--;
+	        right++;
+	    }
+	    return s.substring(left + 1, right);
+	}
 	public static void main(String args[])
 	{
 		StringProblems obj = new StringProblems();
@@ -459,7 +487,8 @@ public class StringProblems {
 		//System.out.println(obj.conversionDecimalToBinary(3));
 		//System.out.println(obj.addBinary1("10100000100100110110010000010101111011011001101110111111111101000000101111001110001111100001101","110101001011101110001111100110001010100001101011101010000011011011001011101111001100000011011110011"));
 		//System.out.println(obj.isValid("(])"));
-		System.out.println(obj.compareVersion("0.0.0.0.1", "0.0.1"));
+		//System.out.println(obj.compareVersion("0.0.0.0.1", "0.0.1"));
+		System.out.println(obj.longestPalindrome("abaaaabaa"));
 		
 		
 	}

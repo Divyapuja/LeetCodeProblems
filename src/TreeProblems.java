@@ -271,7 +271,7 @@ public class TreeProblems {
         }
         return root;
     }
-	public TreeNode lowestCommonAncestor2(TreeNode root, TreeNode p, TreeNode q) {
+	/*public TreeNode lowestCommonAncestor2(TreeNode root, TreeNode p, TreeNode q) {
         Map<TreeNode, TreeNode> parent = new HashMap<TreeNode, TreeNode>();
         Deque<TreeNode> stack = new ArrayDeque<TreeNode>();
         parent.put(root, null);
@@ -296,19 +296,61 @@ public class TreeProblems {
         	while (!ancestors.contains(q))
         		q = parent.get(q);
         	return q;
-    }
+    }*/
+	public TreeNode lowestCommonAncestor2(TreeNode root, TreeNode p, TreeNode q) {
+		Map<TreeNode, TreeNode> lookup = new HashMap<TreeNode, TreeNode>();
+		lookup.put(root,null);
+		storeParentNodes(root,lookup);
+		ArrayList<TreeNode> parents = new ArrayList<TreeNode>();
+		while(p!=null)
+		{
+			parents.add(p);
+			p=lookup.get(p);
+		}
+		while(q!=null)
+		{
+			if(parents.contains(q)) return q;
+			q = lookup.get(q);
+		}
+		
+		
+		return null;
+	}
+	
+	public TreeNode storeParentNodes(TreeNode root, Map<TreeNode, TreeNode> lookup)
+	{
+		if(root == null)
+		{
+			return null;
+		}
+		else
+		{
+			TreeNode left= storeParentNodes(root.left, lookup);
+			if(left!=null)
+			{
+				lookup.put(left, root);
+			}
+			
+			TreeNode right= storeParentNodes(root.right, lookup);
+			if(right!=null)
+			{
+				lookup.put(right, root);
+			}
+			
+		}
+		return root;
+	}
 	
 	public static void main(String args[])
 	{
-		TreeNode root=new TreeNode(5);
-		root.left = new TreeNode(4);
-		root.right = new TreeNode(8);
-		root.left.left = new TreeNode(11);
-		root.left.left.left = new TreeNode(7);
-		root.left.left.right = new TreeNode(2);
-		root.right.left = new TreeNode(13);
-		root.right.right = new TreeNode(4);
-		root.right.right.right = new TreeNode(1);
+		TreeNode root=new TreeNode(-1);
+		root.left = new TreeNode(0);
+		root.left.left = new TreeNode(-2);
+		root.left.right = new TreeNode(4);
+		root.left.left.left = new TreeNode(8);
+		
+		
+		root.right = new TreeNode(3);
 		
 		
 		TreeProblems obj = new TreeProblems();
@@ -321,8 +363,8 @@ public class TreeProblems {
 		
 		//System.out.println(obj.isSymmetric1(root1));
 		//System.out.println(obj.hasPathSum(root,27));
-		System.out.println(obj.lowestCommonAncestor1(root, root.left.left.left, root.left.left.right).val);
-		System.out.println(obj.lowestCommonAncestor2(root, root.left.left.left, root.left.left.right).val);
+		System.out.println(obj.lowestCommonAncestor2(root,root.left.left.left,root.left).val);
+		//System.out.println(obj.lowestCommonAncestor2(root, root.left.left.left, root.left.left.right).val);
 		
 	}
 	

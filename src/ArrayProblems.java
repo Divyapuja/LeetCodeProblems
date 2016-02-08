@@ -9,7 +9,7 @@ import java.util.Set;
 
 public class ArrayProblems {
 	
-	public static void moveZeroes(int[] nums) {
+	public void moveZeroes(int[] nums) {
 		int j = 0;
 	    for(int i = 0; i < nums.length; i++) {
 	        if(nums[i] != 0) {
@@ -51,7 +51,24 @@ public class ArrayProblems {
 	     return elem;
 		 
 	    }
-	
+	public int majorityElement1(int[] nums) {
+	    Arrays.sort(nums);
+	    return nums[nums.length / 2];
+	}
+	public int majorityElement2(int[] nums) {
+	    int majority = nums[0], t = 0;
+	    for (int i : nums) {
+	        if (i == majority) 
+	            ++t;
+	        else if (t > 0)
+	            --t;
+	        else {
+	            majority = i;
+	            t = 1;
+	        }
+	    }
+	    return majority;
+	}
 	public static boolean containsDuplicate(int[] nums) {
         
         HashMap<Integer, Integer> hmap = new HashMap<Integer, Integer>();
@@ -78,6 +95,22 @@ public class ArrayProblems {
         
 		return false;
     }
+	public static boolean containsDuplicate2(int[] nums) {
+		
+		 HashMap<Integer, Integer> hmap = new HashMap<Integer, Integer>();
+		 for(int i=0;i<nums.length;i++)
+         {
+			 if(hmap.containsKey(nums[i]))
+			 {
+				 return true;
+			 }
+			 else
+			 {
+				 hmap.put(nums[i], 1);
+			 }
+         }
+		return false;
+	}
 
 	public boolean containsDuplicate1(int[] nums) {
     
@@ -128,6 +161,22 @@ public class ArrayProblems {
 		}
 		return false;
 	}
+	public int[] twoSum1(int[] nums, int target)
+	{
+		int [] array=new int[2];
+		HashMap<Integer,Integer> lookup = new HashMap<Integer,Integer>();
+		for(int i=0;i<nums.length;i++)
+		{
+			if(lookup.containsKey(target-nums[i]))
+			{
+				array[0]=lookup.get(target-nums[i])+1;
+				array[1]=i+1;
+				return array;
+			}
+			lookup.put(nums[i], i);
+		}
+		return array;
+	}
 	public int[] plusOne(int[] digits) {
         if(digits.length>0)
         {
@@ -163,6 +212,7 @@ public class ArrayProblems {
         
         return digits;
     }
+	
 	public void rotate(int[] nums, int k) {
         int index = 0;
         int distance = 0;
@@ -180,11 +230,11 @@ public class ArrayProblems {
                 cur = index;
             }
             
-            for(int j=0; j<nums.length;j++)
+            /*for(int j=0; j<nums.length;j++)
             {
             	System.out.print(nums[j]);
-            }
-            System.out.println(", index="+index+", curr="+cur+", dist="+distance);
+            }*/
+            //System.out.println(", index="+index+", curr="+cur+", dist="+distance);
             
         }
         
@@ -197,9 +247,10 @@ public class ArrayProblems {
 	    }
 
 	    k = k % nums.length;
-	    reverse(nums, 0, nums.length - k - 1);
-	    reverse(nums, nums.length - k, nums.length - 1);
 	    reverse(nums, 0, nums.length - 1);
+	    reverse(nums, 0, k-1);
+	    reverse(nums, k, nums.length - 1);
+	    
 
 	}
 	//reversing an array
@@ -666,20 +717,20 @@ public class ArrayProblems {
 	public static void main(String args[])
 	{
 		ArrayProblems obj = new ArrayProblems();
-		//int[] nums={0,-1,3,4,2,7,5,8,9,-37,-2};
-		
-		//System.out.println(obj.twoSum(nums));
+		int[] nums={1,2,3,4,5,6,7};
+		//obj.moveZeroes(nums);
+		//System.out.println(obj.majorityElement(nums));
+		//System.out.println(obj.containsDuplicate2(nums));
+		//System.out.println(obj.twoSum1(nums,9)[0]);
+		//System.out.println(obj.twoSum1(nums,9)[1]);
 		//int[] digits={8,9,9};
 		//System.out.println(obj.plusOne(digits)[0]);
 		
-		int[] nums1={-1,1,0};
-		int[] nums2={3,3,4,4};
-		
-		/*obj.rotate(nums, 3);
+		obj.rotate1(nums, 3);
 		for(int i=0;i<nums.length;i++)
 		{
 			System.out.println(nums[i]);
-		}*/
+		}
 		//System.out.println(obj.removeElement(nums, 3));
 		//System.out.println(obj.summaryRanges(nums));
 		//System.out.println(obj.generate(2));
@@ -709,8 +760,8 @@ public class ArrayProblems {
             	System.out.println(matrix[i][j]);
             }
         }*/
-		int[] nums={1,3,5,6};
-		System.out.println(obj.searchInsert(nums,8));
+		/*int[] nums1={1,3,5,6};
+		System.out.println(obj.searchInsert(nums1,8));*/
 	}
 	
 }
