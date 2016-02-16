@@ -689,35 +689,196 @@ public class ArrayProblems {
 	    }
 	    
 	    public int searchInsert(int[] nums, int target) {
-	        int ret = binarySearch(0, nums.length, nums, target);
-	    	
-	    	return ret;
+	        if (nums == null || nums.length == 0) {
+	            return 0;
+	        }
+
+	        return binarySearch(nums, 0, nums.length - 1, target);
+
 	    }
-	    public int binarySearch(int low, int high, int[] nums, int target)
-	    {
-	    	if(low < high)
-	    	{
-	    		int mid = (low+high)/2;
-	    		if(nums[mid] == target)
-	    		{
-	    			return mid;
-	    		}
-	    		else if(nums[mid]<target)
-	    		{
-	    			return binarySearch(mid+1, high, nums, target);
-	    		}
-	    		else
-	    		{
-	    			return binarySearch(low, mid, nums, target);
-	    		}
-	    	}
-	    	return 0;
+
+	    private int binarySearch(int[] nums, int start, int end, int target) {
+	        if(start > end){
+	            return start;
+	        }
+
+	        int mid = (start + end) / 2;
+	        if (nums[mid] == target) {
+	            return mid;
+	        } else if (nums[mid] > target) {
+	            return binarySearch(nums, start, mid - 1, target);
+	        } else {
+	            return binarySearch(nums, mid + 1, end, target);
+	        }
 	    }
-	   
-	public static void main(String args[])
-	{
+	    
+	 public void sort(int []nums, int[] helper)
+	 {
+		 if(nums.length>0)
+		 {
+			 mergeSort(0, nums.length-1, nums, helper);
+		 }
+	 }
+	 public void mergeSort(int low, int high, int [] nums, int[] helper)
+	 {
+		 if(low<high)
+		 {
+			 int mid = (low+high)/2;
+			 //sort the left side
+			 mergeSort(low, mid, nums, helper);
+			 //sort the right side
+			 mergeSort(mid+1, high, nums, helper);
+			 //combine them both
+			 mergeParts(low, mid, high, nums, helper);
+		 }
+	 }
+	 public void mergeParts(int low, int mid, int high, int[] nums, int[] helper)
+	 {
+		 //copy both parts, i.e., low->middle, and middle+1->high to helper array
+		 for(int i=low;i<=high;i++)
+		 {
+			 helper[i]=nums[i];
+		 }
+		 int i=low, j=mid+1, k=low;
+		 while(i<=mid && j<=high)
+		 {
+			 if(helper[i]<=helper[j])
+			 {
+				 nums[k]=helper[i];
+				 i++;
+			 }
+			 else
+			 {
+				 nums[k]=helper[j];
+				 j++;
+			 }
+			 k++;
+		 }
+		 while(i<=mid)
+		 {
+			 nums[k]=helper[i];
+			 k++;
+			 i++;
+		 }
+	 }
+	 
+	 public int search(int[] nums, int target) {
+	        
+		 	int ret = rBinarySearch(0, nums.length-1, nums, target );
+			return ret;
+	    }
+	    
+	 public int rBinarySearch(int low, int high, int[] nums, int target)
+	 {
+		 if(low>high)
+		 {
+			 return -1;
+		 }
+		 
+		 int mid = (low+high)/2;
+		 if(target == nums[mid])
+		 {
+			 return mid;
+		 }
+		 //1st array is sorted
+		 if(nums[low]<=nums[mid])
+		 {
+			 if(target>=nums[low] && target<=nums[mid])
+			 {
+				 return rBinarySearch(low, mid-1, nums, target);
+			 }
+			 else
+			 {
+				 return rBinarySearch(mid+1, high, nums, target);
+			 }
+		 }
+		 //2nd array is sorted
+		 if(nums[mid]<=nums[high])
+		 {
+			 if(target>=nums[mid]&& target<=nums[high])
+			 {
+				 return rBinarySearch(mid+1, high, nums, target);
+			 }
+			 else
+			 {
+				 return rBinarySearch(low, mid-1, nums, target);
+			 }
+		 }
+		 
+		 return -1;
+	 }
+	  
+	 //allow duplicates in rotated array
+	 public boolean search1(int[] nums, int target) {
+	        
+		 	boolean ret = rBinarySearch1(0, nums.length-1, nums, target );
+			return ret;
+	    }
+	 public boolean rBinarySearch1(int low, int high, int[] nums, int target)
+	 {
+		 if(low>high)
+		 {
+			 return false;
+		 }
+		 
+		 int mid = (low+high)/2;
+		 if(target == nums[mid])
+		 {
+			 return true;
+		 }
+		 if(nums[low] == nums[mid])
+		 {
+			 for(int i=low;i<mid;i++)
+			 {
+				 if(target == nums[i])
+				 {
+					 return true;
+				 }
+			 }
+		 }
+		 if(nums[mid] == nums[high])
+		 {
+			 for(int i=mid+1;i<high;i++)
+			 {
+				 if(target == nums[i])
+				 {
+					 return true;
+				 }
+			 }
+		 }
+		 //1st array is sorted
+		 if(nums[low]<=nums[mid])
+		 {
+			 if(target>=nums[low] && target<=nums[mid])
+			 {
+				 return rBinarySearch1(low, mid-1, nums, target);
+			 }
+			 else
+			 {
+				 return rBinarySearch1(mid+1, high, nums, target);
+			 }
+		 }
+		 //2nd array is sorted
+		 if(nums[mid]<=nums[high])
+		 {
+			 if(target>=nums[mid]&& target<=nums[high])
+			 {
+				 return rBinarySearch1(mid+1, high, nums, target);
+			 }
+			 else
+			 {
+				 return rBinarySearch1(low, mid-1, nums, target);
+			 }
+		 }
+		 
+		 return false;
+	 }
+	 
+	 
+	 public static void main(String args[])
+	 {
 		ArrayProblems obj = new ArrayProblems();
-		int[] nums={1,2,3,4,5,6,7};
+		//int[] nums={1,2,3,4,5,6,7};
 		//obj.moveZeroes(nums);
 		//System.out.println(obj.majorityElement(nums));
 		//System.out.println(obj.containsDuplicate2(nums));
@@ -726,11 +887,11 @@ public class ArrayProblems {
 		//int[] digits={8,9,9};
 		//System.out.println(obj.plusOne(digits)[0]);
 		
-		obj.rotate1(nums, 3);
-		for(int i=0;i<nums.length;i++)
+		//obj.rotate1(nums, 3);
+		/*for(int i=0;i<nums.length;i++)
 		{
 			System.out.println(nums[i]);
-		}
+		}*/
 		//System.out.println(obj.removeElement(nums, 3));
 		//System.out.println(obj.summaryRanges(nums));
 		//System.out.println(obj.generate(2));
@@ -760,8 +921,14 @@ public class ArrayProblems {
             	System.out.println(matrix[i][j]);
             }
         }*/
-		/*int[] nums1={1,3,5,6};
-		System.out.println(obj.searchInsert(nums1,8));*/
+		int[] nums1={1,3,1,1,1};
+		System.out.println(obj.search1(nums1, 3));
+		//System.out.println(obj.searchInsert(nums1,2));
+		
+		/*int[] nums={38,27,43,3,9,82,10};
+		int[] helper=new int[7];
+		obj.sort(nums, helper);*/
+		
 	}
 	
 }

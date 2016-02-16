@@ -1,5 +1,7 @@
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Stack;
 import java.util.StringTokenizer;
 
@@ -443,6 +445,77 @@ public class StringProblems {
 		}
 		return 0;
     }
+	
+	 public String countAndSay(int n) {
+		 	String seq = new String("1");
+			for(int i=1;i<n;i++)
+			{
+				seq = genNextSequence(seq);
+			}
+		 	
+		 	return seq;
+	        
+	    }
+	 
+	 public String genNextSequence(String num)
+	 {
+		 	int[] count = new int[10];
+	       
+	        String seq = new String();
+	        int i=0;
+	        while(i<num.length())
+	        {
+	        	char curr = num.charAt(i);
+	        	int curr1 = Integer.parseInt(String.valueOf(curr));
+	        	char next = '\0';
+	        	if(i+1<num.length())
+	        	{
+	        		next = num.charAt(i+1);
+	        	}
+	            if(curr == next)
+	            {
+	                count[curr1]=count[curr1]+1;
+	            }
+	            else
+	            {
+	            	count[curr1]=count[curr1]+1;
+	                if(count[curr1]>1)
+	                {
+	                    seq=seq+count[curr1]+curr1;
+	                }
+	                else
+	                {
+	                    seq=seq+("1"+curr1);
+	                }
+	                count[curr1]=0;
+	            }
+	            i++;
+	        }
+	        
+	        return seq;    
+	 }
+	 public int lengthOfLastWord(String s) {
+	        s= s.trim();
+	        int count=0, temp=0;
+	        int i = s.length()-1;
+	        if(i>=0)
+	        {
+		        while(i>=0)
+		        {
+		        	if(s.charAt(i)==' ')
+		        	{
+		        		temp=count;
+		        		break;
+		        	}
+		        	count++;
+		            i--;
+		        }
+	        }
+	        
+	        
+	        return temp = (temp>0)?temp:count;
+	    }
+	//not a leetcode problem
 	public String longestPalindrome(String s) {
 	    if (s == null || s.length() == 0)
 	        return s;
@@ -471,6 +544,221 @@ public class StringProblems {
 	    }
 	    return s.substring(left + 1, right);
 	}
+	
+	public String convert(String s, int numRows) {
+        //initialize
+		if(numRows==1) return s;
+		String seq = new String();
+    	//first row
+    	int k=(numRows-1)*2;
+		int j=0;
+    	while(j<s.length())
+    	{
+    		seq=seq+s.charAt(j);
+    		j=j+k;
+    	}
+    	//middle rows
+    	k=(numRows-1)*2;
+    	int p1=k; int p2=0; int l=0;
+    	for(int i=1; i<numRows-1;i++)
+        {
+    			//create 2 partitions
+    			p1=p1-2;p2=p2+2;
+    			j=i;l=0;
+    			while(j<s.length())
+    			{
+    				seq=seq+s.charAt(j);
+    				l++;
+    				j=l%2==1?j+p1:j+p2;
+    			}
+        }	
+    	//lastrow
+    	k=(numRows-1)*2;
+		j=numRows-1;
+    	while(j<s.length())
+    	{
+    		seq=seq+s.charAt(j);
+    		j=j+k;
+    	}
+        return seq;
+    }
+    public int[] updateArray(int len, int row, int numRows)
+    {
+    	//get the value to be incremented;
+    	int k=row==0||row==numRows-1?(numRows-1)*2:2;
+    	//get the size of the array
+    	int size=len/k;
+    	//initialize array
+    	int[] array = new int[size+1];
+    	//intialize first value
+    	array[0]=row;
+    	
+        for(int i=1; i<array.length;i++)
+        {
+           if(row==0 || row==numRows-1)
+           {
+               array[i]=array[i-1]+(numRows-1)*2;
+           }
+           else
+           {
+        	   k=row%2==0&&i%2==0?k+4:k+2;
+        	   array[i]=array[i-1]+k;            
+           }
+        }
+        
+        return array;
+    }
+    public int myAtoi(String str) {
+        
+    	str = str.trim();
+        if(str.length()==0) return 0;
+        
+        int sign=1;
+        boolean posSign=false;
+        int j=0;
+        if(str.charAt(0)=='-') {sign=-1;j=1;}
+        if(str.charAt(0)=='+') {sign=1;j=1;}
+        
+        
+        long n=0,i=str.length()-1;
+        while(j<str.length())
+        {
+        	if(!(str.charAt(j)>='0' && str.charAt(j)<='9'))
+        	{
+        		return (int) ((int) sign*n);
+        	}
+        	n= n*10 + str.charAt(j)-'0';
+        	
+        	 if(sign*n>Integer.MAX_VALUE)
+             {
+                 return Integer.MAX_VALUE;
+             }
+             if(sign*n<Integer.MIN_VALUE)
+             {
+                 return Integer.MIN_VALUE;
+             }
+            j++;
+        }
+        
+       
+     return (int) ((int) sign*n);      
+    }
+    //naive method of finding substring
+	//O(mn)
+	public int strStr1(String haystack, String needle) {
+	        
+	        haystack = haystack.trim();
+	        needle = needle.trim();
+	        if(haystack.length()==0 && needle.length()==0) return 0;
+	        if(haystack.length()> 0 && needle.length()==0) return 0;
+	        
+	        //haystack.
+	        int i=0, j=0; int count=0; int index=0;
+	        while(i<haystack.length())
+	        {
+	        	index=0;
+	        	if(j<needle.length())
+	        	{
+		            if(haystack.charAt(i) == needle.charAt(j))
+		            {
+		                        index=i;
+		                        while(j<needle.length())
+		                        {
+		                        	if(i<haystack.length())
+		                        	{
+			                            if(haystack.charAt(i) == needle.charAt(j))
+			                            {
+			                                count++;
+			                            }
+		                        	}
+		                        	j++; i++;
+		                        }
+		                        if(count==needle.length())
+		                        {
+		                            return index;
+		                        }
+		                        else
+		                        {
+		                        	i=index;
+		                        }
+		                        
+		            }
+	        	}
+	            
+	            i++;
+	            j=0;
+	            count=0;
+	        }
+	        
+	        return -1;
+	    }
+    //finding substring using KMP algorithm
+	//O(m+n)
+	public int strStr(String haystack, String needle) {
+		if(haystack.length()==0 && needle.length()==0) return 0;
+        if(haystack.length()> 0 && needle.length()==0) return 0;
+		//compute the prefix array
+		int[] prefixArray = computePrefixArray(needle);
+		//search the haystack using the prefix array to determine a match
+		int i=0; int j=0;
+		while(i<haystack.length() && j<needle.length())
+		{
+			//start comparing haystack with needle, for every character matched increment i and j
+			if(haystack.charAt(i) == needle.charAt(j))
+			{
+				
+				i++; j++;
+				if(j==needle.length())
+				{
+					return i-j;//return the index of the first occurence
+				}
+			}
+			else
+			{
+				if(j!=0)
+				{
+					j=prefixArray[j-1];
+				}
+				else
+				{
+					i++;
+				}
+			}
+		}
+		return -1;
+	}
+	public int[] computePrefixArray(String needle)
+	{
+		int[] array = new int[needle.length()];
+		int index=0;//first element is 0
+		for(int i=1; i<needle.length();)
+		{
+			if(needle.charAt(i) == needle.charAt(index))
+			{
+				array[i]=index+1;
+				index++;
+				i++;
+			}
+			else
+			{
+				if(index!=0)
+				{
+					if(index-1>=0)
+					{
+						index = array[index-1];
+					}
+				}
+				else
+				{
+					array[i]=0;
+					i++;
+				}
+			}
+		}
+		
+		return array;
+	}
+	
 	public static void main(String args[])
 	{
 		StringProblems obj = new StringProblems();
@@ -488,8 +776,10 @@ public class StringProblems {
 		//System.out.println(obj.addBinary1("10100000100100110110010000010101111011011001101110111111111101000000101111001110001111100001101","110101001011101110001111100110001010100001101011101010000011011011001011101111001100000011011110011"));
 		//System.out.println(obj.isValid("(])"));
 		//System.out.println(obj.compareVersion("0.0.0.0.1", "0.0.1"));
-		System.out.println(obj.longestPalindrome("abaaaabaa"));
-		
-		
+		//System.out.println(obj.longestPalindrome("abaaaabaa"));
+		//System.out.println(obj.countAndSay(3));
+		//System.out.println(obj.lengthOfLastWord("a"));
+		//System.out.println(obj.convert("ABCDE", 4));
+		System.out.println(obj.strStr("abxabcabcaby","abcaby"));
 	}
 }
