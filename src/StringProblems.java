@@ -1,7 +1,10 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.List;
+import java.util.Set;
 import java.util.Stack;
 import java.util.StringTokenizer;
 
@@ -515,35 +518,8 @@ public class StringProblems {
 	        
 	        return temp = (temp>0)?temp:count;
 	    }
-	//not a leetcode problem
-	public String longestPalindrome(String s) {
-	    if (s == null || s.length() == 0)
-	        return s;
-	    String longest = s.substring(0, 1);
-	    for (int i = 0; i < s.length(); i++) {
-	        if(s.length()-i <longest.length()/2)
-	            break;
-	        String oddPal = findLengthofPalindrome(s, i, i);
-	        if (longest.length() < oddPal.length()) {
-	            longest = oddPal;
-	        }
-
-	        String evenPal = findLengthofPalindrome(s, i, i + 1);
-	        if (longest.length() < evenPal.length()) {
-	            longest = evenPal;
-	        }
-	    }
-	    return longest;
-
-	}
-
-	private String findLengthofPalindrome(String s, int left, int right) {
-	    while (left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right)) {
-	        left--;
-	        right++;
-	    }
-	    return s.substring(left + 1, right);
-	}
+	
+	
 	
 	public String convert(String s, int numRows) {
         //initialize
@@ -758,7 +734,299 @@ public class StringProblems {
 		
 		return array;
 	}
+	//Dont consider the method
+	public String multiply(String num1, String num2) {
+	    int i=num2.length()-1;
+	    int count=0;
+	    String sum = new String("0");
+	    if(num1.length()>0 && num2.length()>0)
+	    {
+	        while(i>=0)
+	        {
+	            int num21 = num2.charAt(i)-'0';
+	            String stepSum = stepMultiply(num1, num21);
+	            stepSum = reverse(stepSum);
+	            stepSum = addZeros(stepSum, count);
+	            sum = computeSum(sum, stepSum);
+	            sum= reverse(sum);
+	            count++;
+	            i--;
+	        }
+	    }   
+	     return sum;    
+	    }
+	    public String computeSum(String sum, String stepSum)
+	    {
+	        if(sum.length()==0 && stepSum.length()==0) return "";
+	        if(sum.length()>0 && stepSum.length()==0) return sum;
+	        if(sum.length()==0 && stepSum.length()>0) return stepSum;
+	        
+	        String newSum = new String();
+	        if(sum.length()>0 && stepSum.length()>0)
+	        {
+	            int aLen = sum.length();
+	            int bLen = stepSum.length();
+	            int aNum=0, bNum=0, cNum=0;
+	            int carry=0;
+	            while(Math.max(aLen, bLen)>0)
+	            {
+	                if(aLen>0)
+	                {
+	                    aNum = sum.charAt(aLen-1)-'0';
+	                    aLen--;
+	                }
+	                else
+	                {
+	                    aNum=0;
+	                }
+	                if(bLen>0)
+	                {
+	                    bNum = stepSum.charAt(bLen-1)-'0';
+	                    bLen--;
+	                }
+	                else
+	                {
+	                    bNum =0;
+	                }
+	                cNum = aNum + bNum + carry;
+	                newSum = newSum + String.valueOf(cNum%10);
+	                carry = cNum/10;
+	            }
+	            if(carry>0)
+	            {
+	            	newSum= newSum+String.valueOf(carry);
+	            }
+	        }
+	        
+	        return newSum;
+	    }
+	    public String addZeros(String stepSum, int count)
+	    {
+	        int i=0;
+	        if(stepSum.equals("0")) return "0";
+	        if(stepSum.length()>0)
+	        {
+	            while(i<count)
+	            {
+	                stepSum = stepSum+0;
+	                i++;
+	            }
+	        }
+	        return stepSum;
+	    }
+	    public String stepMultiply(String num1, int num21)
+	    {
+	        if(num21==0) return "0";
+	        //if(num21==1) return num1;
+	        
+	        int i=num1.length()-1;
+	        int carry=0;
+	        String sumStr = new String();
+	        while(i>=0)
+	        {
+	        	int num11=num1.charAt(i)-'0';
+	            int sum = carry + num21 * num11 ;
+	            sumStr = sumStr + String.valueOf(sum%10);
+	            carry = sum/10;
+	            i--;
+	        }
+	        if(carry>0)
+	            {
+	                sumStr= sumStr+String.valueOf(carry);
+	            }
+	        return sumStr;
+	    }
+	    public String reverse(String str)
+	    {
+	    	char[] array = str.toCharArray();
+	    	int i=0;
+	    	int j=str.length()-1;
+	    	while(i<j)
+	    	{
+	    		char temp=array[i];
+	    		array[i]=array[j];
+	    		array[j]=temp;
+	    		i++;
+	    		j--;
+	    	}
+	    	return new String(array);
+	    }
 	
+	    //multiply two nos
+	    public String multiply1(String num1, String num2)
+	    {
+	    	int len1=num1.length();
+	    	int len2=num2.length();
+	    	int[] array = new int[len1+len2];
+	    	int sum=0, mul=0;
+	    	for(int i=len1-1; i>=0;i--)
+	    	{
+	    		for(int j=len1-1; j>=0;j--)
+	    		{
+	    			int p1=i+j;
+	    			int p2=i+j+1;
+	    			
+	    			mul = (num1.charAt(i)-'0') * (num2.charAt(j)-'0');
+	    			sum = mul + array[p2];
+	    			
+	    			array[p1]+=sum/10;
+	    			array[p2]=sum%10;
+	    		}
+	    	}
+	    	
+	    	StringBuilder sb = new StringBuilder();
+	        for(int p : array) 
+	        	if(!(sb.length() == 0 && p == 0)) 
+	        		sb.append(p);
+	        return sb.length() == 0 ? "0" : sb.toString();
+	    }
+	    
+	    //length of the longest substring without duplicates
+	    public int lengthOfLongestSubstring(String s) {
+	    	if(s.length()==0) return 0;
+	        if(s.length()==1) return 1;
+	        ArrayList<String> array = new ArrayList<String>();
+	        int max=0;
+	        int slow=0; int fast=0;
+	        while(fast<s.length())
+	        {
+	        	if(!array.contains(String.valueOf(s.charAt(fast))))
+	        	{
+	        		array.add(String.valueOf(s.charAt(fast)));
+	        		max = Math.max(max,array.size());
+	        		fast++;
+	        	}
+	        	else
+	        	{
+	        			array.remove(String.valueOf(s.charAt(slow)));
+	        			slow++;
+	        	}
+	        }
+	        return max;
+	    }
+	    
+	    public List<String> restoreIpAddresses(String s) {
+	    	List<String> res=new ArrayList<String>();
+	    	
+	    	//need to construct 4 strings: s1, s2, s3, s4
+	    	//s1 starts from 0
+	    	//s2 ranges from 1 till len-2
+	    	for(int i=1; i<4 && i<s.length()-2;i++)
+	    	{
+	    		//s3 starts from 2 till len-1
+	    		for(int j=i+1; j<i+4 && j<s.length()-1;j++)
+	    		{
+	    			//s4 starts from 3 till len
+	    			for(int k=j+1; k<j+4 && k<s.length();k++)
+	    			{
+	    				//construct strings
+	    				String s1=s.substring(0,i);
+	    				String s2=s.substring(i,j);
+	    				String s3=s.substring(j,k);
+	    				String s4=s.substring(k,s.length());
+	    				
+	    				//check if all the strings are valid
+	    				//if yes return a possible IP Address
+	    				if(valid(s1) && valid(s2) && valid(s3) && valid(s4))
+	    				{
+	    					res.add(s1+"."+s2+"."+s3+"."+s4);
+	    				}
+	    			}
+	    		}
+	    	}
+	        return res;
+	    }
+	    public boolean valid(String str)
+	    {
+	    	if(str.length()>3 || str.length()==0|| (str.charAt(0)=='0' && str.length()>1) || Integer.parseInt(str)>255)
+	    		return false;
+	    	return true;
+	    }
+	    
+	    //naive solution or brute force
+	    
+	    public boolean validPalindrome(String str) {
+			int i=0, j=str.length()-1;
+			while(i<j)
+			{
+				if(str.charAt(i)!=str.charAt(j))
+				{
+					return false;
+				}
+				i++;
+				j--;
+			}
+		
+			return true;
+		}
+	
+	    //optimize
+	    public String longestPalindrome1(String s) {
+	    	if(s.length()==1) return s;
+	    	
+	    	String longest = new String();
+	    	int max=0;
+	    	
+	    	for(int i=0; i<s.length(); i++)
+	    	{
+	    		for(int j=i+1; j<s.length(); j++)
+	    		{
+	    			//construct a string
+	    			String str=s.substring(i,j);
+	    			//check if it's palindrome
+	    			if(validPalindrome(str))
+	    			{
+		    			if(str.length()>max)
+		    			{
+		    				max=str.length();
+		    				longest=str;
+		    			}
+	    			}
+	    		}
+	    	}
+	    	
+	    	return longest;
+	    }
+	    public String longestPalindrome(String s) {
+	    	if(s.length()==1) return s;
+	    	
+	    	String longest = new String();
+	    	int max=0;
+	    	
+	    	for(int i=0; i<s.length()-1; i++)
+	    	{
+	    			//construct a string
+	    			String str = validPalindrome(s,i,i);
+	    			//check if it's palindrome
+	    				if(str.length()>max)
+		    			{
+		    				max=str.length();
+		    				longest=str;
+		    			}
+	    			
+	    			//construct a string
+	    			String str1=validPalindrome(s,i,i+1);
+	    			//check if it's palindrome
+    				if(str1.length()>max)
+	    			{
+	    				max=str1.length();
+	    				longest=str1;
+	    			}
+	    	}
+	    	
+	    	return longest;
+	    }
+	    //start every string at one index and keep extending left and right to check if it's a palindrome, if yes
+	    //return the string 
+	    public String validPalindrome(String str, int left, int right) {
+		while(left>=0 && right <str.length() && str.charAt(left)==str.charAt(right))
+		{
+			left--;//extend left
+			right++;//extend right
+		}
+		return str.substring(left+1,right);
+	}
+
 	public static void main(String args[])
 	{
 		StringProblems obj = new StringProblems();
@@ -780,6 +1048,14 @@ public class StringProblems {
 		//System.out.println(obj.countAndSay(3));
 		//System.out.println(obj.lengthOfLastWord("a"));
 		//System.out.println(obj.convert("ABCDE", 4));
-		System.out.println(obj.strStr("abxabcabcaby","abcaby"));
+		//System.out.println(obj.strStr("abxabcabcaby","abcaby"));
+		//System.out.println(obj.multiply1("0","52"));
+		//System.out.println(obj.lengthOfLongestSubstring("pwwkew"));
+		//String s=new String("010010");
+		//System.out.println(obj.restoreIpAddresses(s));
+		System.out.println(obj.longestPalindrome("abaaaabaa"));
+		
+		
+		
 	}
 }
