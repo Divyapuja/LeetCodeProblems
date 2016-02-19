@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -987,26 +988,67 @@ public class ArrayProblems {
 	    	}
 	    	return false;
 	    }
+	    //derviation: Rotation
+	    //i,j => cols-j, i //can be seen from symmetry of matrices
+	    //keep substituing
+	    //cols-j, i => cols-i, cols-j
+	    //cols-i, cols-j => cols-(cols-j),cols-i => j, cols-i
+	    //j, cols -i => cols -(cols-i), j => i,j rotation is complete
+	    //M/2 since centre doesn't need to be rotated
 	    public void rotate(int[][] matrix) {
-	        int rows = matrix.length-1;
-	        int cols = matrix[0].length-1;
-	        
-	        for(int i=0; i<=rows; i++)
-	        {
-	            for(int j=0; j<=cols; j++)
-	            {
-	                matrix[i][j]=matrix[i][j]*10+matrix[cols-j][i];
+	        for (int i = 0; i < (matrix.length+1)/2; i++) {
+	            for (int j = 0; j < matrix.length/2; j++) {
+	                int tmp = matrix[i][j];
+	                matrix[i][j] = matrix[matrix.length-j-1][i];
+	                matrix[matrix.length-j-1][i] = matrix[matrix.length-i-1][matrix.length-j-1];
+	                matrix[matrix.length-i-1][matrix.length-j-1] = matrix[j][matrix.length-i-1];
+	                matrix[j][matrix.length-i-1] = tmp;
 	            }
 	        }
-	        for(int i=0; i<=rows; i++)
+	    }
+	    
+	    public List<List<Integer>> fourSum(int[] nums, int target) {
+	    	List<List<Integer>> foursumarray = new ArrayList<List<Integer>>();
+	        int size=nums.length;
+	        int first=0, second=0, third=0, fourth=0;//three pointers
+	        Arrays.sort(nums);
+	        while(first<size)
 	        {
-	            for(int j=0; j<=cols; j++)
-	            {
-	                matrix[i][j]=matrix[i][j]%10;
-	            }
+	        	//if(first > 0 && nums[first] == nums[first-1]) first++;//skip duplicates
+	        	
+	        	second = first+1;
+	        	while(second<size)
+	        	{
+	        		int target1 = target-nums[second] - nums[first];
+	        		//if(first < second && nums[second] == nums[second-1]) second++;//skip duplicates
+	        		
+	        		third = second+1; fourth=size-1;
+		        	while(third<fourth)
+		        	{
+		        		if(nums[third]+nums[fourth] == target1)
+		        		{
+		        			if(!foursumarray.contains(Arrays.asList(nums[first],nums[second],nums[third], nums[fourth])))
+		        			foursumarray.add(Arrays.asList(nums[first],nums[second],nums[third], nums[fourth]));
+		        			//while(third<fourth && nums[third]==nums[third+1]) third++;
+		        			//while(third<fourth && nums[third]==nums[fourth-1]) fourth--;
+		        			third++; fourth--;
+		        			
+		        		}
+		        		else if(nums[third]+nums[fourth] < target1)
+		        		{
+		        			third++;
+		        		}
+		        		else
+		        		{
+		        			fourth--;
+		        		}
+		        	}
+		        	second++;
+	        	}
+	        	first++;
 	        }
-	        
-	    } 
+	        return foursumarray;
+	    }
 	 public static void main(String args[])
 	 {
 		ArrayProblems obj = new ArrayProblems();
@@ -1061,18 +1103,12 @@ public class ArrayProblems {
 		System.out.println(obj.searchRange(nums,4)[0]);
 		System.out.println(obj.searchRange(nums,4)[1]);//10,13
 */	
-		int[][] matrix={{1,2},{3,4}};
+		//int[][] matrix={{1,2,3},{4,5,6},{7,8,9}};
 		//System.out.println(obj.searchMatrix1(matrix, 2));
-		obj.rotate(matrix);
-		for(int i=0; i<matrix.length;i++)
-		{
-			for(int j=0; j<matrix[0].length;j++)
-			{
-				System.out.print(matrix[i][j]);
-				System.out.println();
-			}
-		}
-		
+		//obj.rotate(matrix);
+		int[] nums={-3,-2,-1,0,0,1,2,3};
+		System.out.println(obj.fourSum(nums, 0));
+//		[[-3,-2,2,3],[-3,-1,1,3],[-3,0,0,3],[-3,0,1,2],[-2,-1,0,3],[-2,-1,1,2],[-2,0,0,2],[-1,0,0,1]]
 	 }
 	
 }
