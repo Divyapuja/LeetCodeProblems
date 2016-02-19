@@ -873,8 +873,140 @@ public class ArrayProblems {
 		 
 		 return false;
 	 }
-	 
-	 
+	 public int[] searchRange(int[] nums, int target) {
+	        
+	        int[] range=new int[2];
+	        range[0]=-1;
+	        range[1]=-1;
+	        
+	        range = getSearchRange(0, nums.length-1, nums, target, range);
+	        
+	        
+	        return range;
+	    }
+	    public int[] getSearchRange(int low, int high, int[] nums, int target, int[] range)
+	    {
+	        if(low>high) return range;
+	        
+	            int mid=(low+high)/2;
+	            
+	            if(nums[mid]==target)
+	            {
+	            	if(range[0]==-1 || mid<range[0])range[0]=mid;
+	            	if(range[1]==-1 || mid>range[1])range[1]=mid;
+	            	
+	            	
+	            	if(mid-1>=0)
+	            	{
+		                if(nums[mid-1]==target && mid-1<range[0])
+		                {
+		                    range[0] = mid-1;
+		                }
+	            	}
+	            	if(mid+1<=high)
+	            	{
+		                if(nums[mid+1]==target && mid+1>range[1]) 
+		                {
+		                    range[1] = mid+1;
+		                }
+	            	}
+	            	range = getSearchRange(low, mid-1, nums, target, range);
+	            	range = getSearchRange(mid+1, high, nums, target, range);
+	            	
+	                return range;
+	            }
+	            else if(nums[mid]<target)
+	            {
+	            	return getSearchRange(mid+1, high, nums, target, range);
+	                
+	            }
+	            else
+	            {
+	            	return getSearchRange(low, mid-1, nums, target, range);
+	            }
+	    }
+	    public boolean searchMatrix(int[][] matrix, int target) {
+	        int rows = matrix.length;
+	        int cols = matrix[0].length;
+	        int len=rows*cols;
+	        
+	        boolean res = false;
+	        res = binarySearchMatrix(0, len-1, matrix, target);
+	        
+	        return res;
+	    }
+	    public boolean binarySearchMatrix(int low, int high, int[][] matrix, int target)
+	    {
+	        if(low> high) return false;
+	        int mid=(low+high)/2;
+	        int x = getRowValue(mid,matrix[0].length);
+	        int y = getColValue(mid,matrix[0].length);
+	        if(matrix[x][y]==target)
+	        {
+	            return true;
+	        }
+	        else if(matrix[x][y]<target)
+	        {
+	            return binarySearchMatrix(mid+1, high, matrix, target);
+	        }
+	        else
+	        {
+	            return binarySearchMatrix(low, mid-1, matrix, target);
+	        }
+	    }
+	    public int getCellValue(int x, int y, int cols)
+	    {
+	        return x*cols+y;
+	    }
+	    public int getRowValue(int cellValue, int cols)
+	    {
+	        return cellValue/cols;
+	    }
+	    public int getColValue(int cellValue, int cols)
+	    {
+	        return cellValue%cols;
+	    }
+	    public boolean searchMatrix1(int[][] matrix, int target) {
+	    	int row =0;
+	    	int col =  matrix[0].length-1;
+	    	
+	    	while(row<matrix.length && col>=0)
+	    	{
+	    		if(matrix[row][col]==target)
+	    		{
+	    			return true;
+	    		}
+	    		else if(matrix[row][col]<target)
+	    		{
+	    			row++;
+	    		}
+	    		else
+	    		{
+	    			col--;
+	    		}
+	    	}
+	    	return false;
+	    }
+	    public void rotate(int[][] matrix) {
+	        int rows = matrix.length-1;
+	        int cols = matrix[0].length-1;
+	        
+	        for(int i=0; i<=rows; i++)
+	        {
+	            for(int j=0; j<=cols; j++)
+	            {
+	                matrix[i][j]=matrix[i][j]*10+matrix[cols-j][i];
+	            }
+	        }
+	        for(int i=0; i<=rows; i++)
+	        {
+	            for(int j=0; j<=cols; j++)
+	            {
+	                matrix[i][j]=matrix[i][j]%10;
+	            }
+	        }
+	        
+	    } 
 	 public static void main(String args[])
 	 {
 		ArrayProblems obj = new ArrayProblems();
@@ -921,14 +1053,26 @@ public class ArrayProblems {
             	System.out.println(matrix[i][j]);
             }
         }*/
-		int[] nums1={1,3,1,1,1};
-		System.out.println(obj.search1(nums1, 3));
+		//int[] nums1={1,3,1,1,1};
+		//System.out.println(obj.search1(nums1, 3));
 		//System.out.println(obj.searchInsert(nums1,2));
 		
-		/*int[] nums={38,27,43,3,9,82,10};
-		int[] helper=new int[7];
-		obj.sort(nums, helper);*/
+		/*int[] nums={0,0,1,1,1,2,2,3,3,3,4,4,4,4,5,5,6,6,6,8,10,10};
+		System.out.println(obj.searchRange(nums,4)[0]);
+		System.out.println(obj.searchRange(nums,4)[1]);//10,13
+*/	
+		int[][] matrix={{1,2},{3,4}};
+		//System.out.println(obj.searchMatrix1(matrix, 2));
+		obj.rotate(matrix);
+		for(int i=0; i<matrix.length;i++)
+		{
+			for(int j=0; j<matrix[0].length;j++)
+			{
+				System.out.print(matrix[i][j]);
+				System.out.println();
+			}
+		}
 		
-	}
+	 }
 	
 }

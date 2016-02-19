@@ -3,7 +3,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 import java.util.StringTokenizer;
@@ -936,13 +938,7 @@ public class StringProblems {
 	    	}
 	        return res;
 	    }
-	    public boolean valid(String str)
-	    {
-	    	if(str.length()>3 || str.length()==0|| (str.charAt(0)=='0' && str.length()>1) || Integer.parseInt(str)>255)
-	    		return false;
-	    	return true;
-	    }
-	    
+	   
 	    //naive solution or brute force
 	    
 	    public boolean validPalindrome(String str) {
@@ -959,6 +955,13 @@ public class StringProblems {
 		
 			return true;
 		}
+	    public boolean valid(String str)
+	    {
+	    	if(str.length()>3 || str.length()==0|| (str.charAt(0)=='0' && str.length()>1) || Integer.parseInt(str)>255)
+	    		return false;
+	    	return true;
+	    }
+	    
 	
 	    //optimize
 	    public String longestPalindrome1(String s) {
@@ -1026,7 +1029,160 @@ public class StringProblems {
 		}
 		return str.substring(left+1,right);
 	}
-
+	    
+	    public List<String> letterCombinations(String digits) {
+	        List<String> res = new ArrayList<String>();
+	        
+	        //store mobile nos and their digits
+	        Map<String, String> mobile=new HashMap<String, String>();
+	        mobile.put("1","");mobile.put("2","abc");mobile.put("3","def");
+	        mobile.put("4","ghi");mobile.put("5","jkl");mobile.put("6","mno");
+	        mobile.put("7","pqrs");mobile.put("8","tuv");mobile.put("9","wxyz");
+	        
+	        String[] array= new String[1];
+	        array[0]="";
+	        for(int i=0; i<digits.length();i++)
+	        {
+	            String digit1=String.valueOf(digits.charAt(i));
+	            array =generateCrossProduct(array, mobile.get(digit1));  
+	        }
+	        if(array.length==1 && array[0]=="")	return res;
+	        
+	        
+	        for(int j=0; j<array.length;j++) 
+            {
+                res.add(array[j]);
+            }
+	        
+	        return res;
+	    }
+	    
+	    public String[] generateCrossProduct(String [] array, String alpha)
+	    {
+	    		
+	    		int size = array.length * alpha.length();
+	    		String[] array1 = new String[size];
+	    		int index=0;
+	            for(int i=0; i<alpha.length();i++) 
+	                {
+	                    for(int j=0; j<array.length;j++) 
+	                    {
+	                        array1[index] = String.valueOf(array[j]+alpha.charAt(i));
+	                        index++;
+	                    }
+	                }
+	        return array1;
+	    }
+	    
+	    public List<List<String>> groupAnagrams(String[] strs) {
+	        List<List<String>> array = new ArrayList<List<String>>();
+	        Map<String, List<String>> groups = new HashMap<String, List<String>>();
+	        
+	        Arrays.sort(strs);
+	        for(int i=0; i<strs.length; i++)
+	        {
+	            String key = getKey(strs[i]);
+	            if(!groups.containsKey(key))
+	            {
+	                List<String> group = new ArrayList<String>();
+	                group.add(strs[i]);
+	                groups.put(key, group);
+	            }
+	            else
+	            {
+	                List<String> group = groups.get(key);
+	                group.add(strs[i]);
+	                groups.replace(key, group);
+	            }
+	        }
+	        
+	        Iterator it = groups.entrySet().iterator();
+	        while(it.hasNext())
+	        {
+	            Map.Entry pair = (Map.Entry)it.next();
+	            List<String> group = (List<String>) pair.getValue();
+	            array.add(group);
+	        }
+	        
+	        return array;
+	    }
+	    public String getKey(String str)
+	    {
+	    	char[] c=str.toCharArray();
+	    	Arrays.sort(c);
+	    	
+	    	return String.valueOf(c);
+	    }
+	    
+	    public String reverseWords(String s) {
+	    	s =s.replaceAll("\\s+", " ").trim();
+	    	
+	        if(!s.contains(" ") || s.length()==0 ) return s;
+	        
+	        String snew=new String("");
+	        s = reverse(s);
+	        int i=0; int j=0;
+	        while(i<s.length() && j<s.length())
+	        {
+	           if(s.charAt(j)==' ')
+	           {
+	                String s1 = s.substring(i,j);
+	                s1 = reverse(s1);
+	                snew = snew+s1+s.charAt(j);
+	                i=j+1;
+	                
+	           }
+	           if(j==s.length()-1)
+	           {
+	        	   String s1 = s.substring(i,j+1);
+	               s1 = reverse(s1);
+	               snew = snew+s1;
+	           }
+	           j++;
+	        }
+	        
+	        return snew;
+	    }
+	    public int minDistance(String word1, String word2) {
+	        int len1 = word1.length();
+	        int len2 = word2.length();
+	        int minD=0;
+	        int min=0;
+	        int[][] d=new int[len1+1][len2+1];
+	        d[0][0]=0;
+	        //initialize rows
+	        for(int i=1; i<len1+1;i++)
+	        {
+	            d[i][0]=i;
+	        }
+	        //initialize columns
+	        for(int j=1; j<len2+1;j++)
+	        {
+	            d[0][j]=j;
+	        }
+	        
+	        for(int i=1; i<len1+1;i++)
+	        {
+	            for(int j=1; j<len2+1;j++)
+	            {
+	                if(word1.charAt(i-1)==word2.charAt(j-1))
+	                {
+	                    d[i][j]=d[i-1][j-1];
+	                }
+	                else
+	                {
+	                	min =0;
+	                	min = Math.min(d[i-1][j],d[i][j-1]);
+	                	min = Math.min(min,d[i-1][j-1]);
+	                    d[i][j] = min+1;
+	                }
+	            }
+	        }
+	        
+	        minD=d[len1][len2];
+	        
+	        return minD;
+	    } 
 	public static void main(String args[])
 	{
 		StringProblems obj = new StringProblems();
@@ -1053,8 +1209,12 @@ public class StringProblems {
 		//System.out.println(obj.lengthOfLongestSubstring("pwwkew"));
 		//String s=new String("010010");
 		//System.out.println(obj.restoreIpAddresses(s));
-		System.out.println(obj.longestPalindrome("abaaaabaa"));
-		
+		//System.out.println(obj.longestPalindrome("abaaaabaa"));
+		//System.out.println(obj.letterCombinations("234"));
+		//String[] strs={"eat", "tea", "tan", "ate", "nat", "bat"};
+		//System.out.println(obj.groupAnagrams(strs));
+		//System.out.println(obj.reverseWords("  a  b "));
+		System.out.println(obj.minDistance("sunday", "saturday"));
 		
 		
 	}
