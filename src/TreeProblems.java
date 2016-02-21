@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -214,16 +215,7 @@ public class TreeProblems {
 	           && isSymmetric1(node1.right,node2.left);
 	}
 	
-	public List<List<Integer>> levelOrder(TreeNode root) {
-        List<List<Integer>> obj = new ArrayList<List<Integer>>();
-        /*if(root == null){return }
-        if(root != null)
-        {
-        	
-        	
-        }*/
-       return obj;
-    }
+	
 	
 	public boolean hasPathSum(TreeNode root, int sum) {
         if(root == null)
@@ -340,17 +332,73 @@ public class TreeProblems {
 		}
 		return root;
 	}
-	
+	public List<List<Integer>> levelOrder(TreeNode root) {
+        List<List<Integer>> arrays = new ArrayList<List<Integer>>(); 
+        Map<Integer,List<Integer>> map = new HashMap<Integer,List<Integer>>();
+        if(root!=null)
+        {
+        		List<Integer> row = new ArrayList<Integer>();    
+            	row.add(root.val);
+            	map.put(0, row);
+                levelOrderTraversal(root.left, map, 1);
+                levelOrderTraversal(root.right, map, 1);
+        }
+        
+        Iterator itr = map.keySet().iterator();
+        while(itr.hasNext())
+        {
+        	Integer key = (Integer)itr.next();
+        	List<Integer> row = map.get(key);
+        	arrays.add(row);
+        }
+        
+        return arrays;
+    }
+    
+    public int levelOrderTraversal(TreeNode root, Map<Integer,List<Integer>> map, int height)
+    {
+                if(root==null) return height;
+                if(map.containsKey(height))
+                {
+                    List<Integer> row = map.get(height);
+                    if(!row.contains(root.val))
+                    {
+                        row.add(root.val);
+                        map.replace(height,row);
+                    }
+                }
+                else
+                {
+                    List<Integer> row = new ArrayList<Integer>();    
+                    row.add(root.val);
+                    map.put(height, row);
+                }
+                levelOrderTraversal(root.left, map, height+1);
+                levelOrderTraversal(root.right, map, height+1);
+      return -1;          
+    }
+    public boolean isValidBST(TreeNode root) {
+        return isValidBST(root, null, null);
+    }
+    public boolean isValidBST(TreeNode root, Integer min, Integer max) {
+    	if(root == null)return true;
+    	if(min!=null && root.val<=min) return false;
+    	if(max!=null && root.val>=max) return false;
+			
+    	return isValidBST(root.left, min, root.val) && isValidBST(root.right, root.val, max);
+    }
+    
 	public static void main(String args[])
 	{
-		TreeNode root=new TreeNode(-1);
-		root.left = new TreeNode(0);
-		root.left.left = new TreeNode(-2);
-		root.left.right = new TreeNode(4);
-		root.left.left.left = new TreeNode(8);
+		TreeNode root=new TreeNode(10);
+		root.left = new TreeNode(5);
+		root.left.left = null;
+		root.left.right = null;
 		
 		
-		root.right = new TreeNode(3);
+		root.right = new TreeNode(15);
+		root.right.left=new TreeNode(6);
+		root.right.right=new TreeNode(20);
 		
 		
 		TreeProblems obj = new TreeProblems();
@@ -358,13 +406,12 @@ public class TreeProblems {
 		
 		
 		
-		TreeNode root1=new TreeNode(1);
-		//TreeNode root1=new TreeNode(1);
-		
 		//System.out.println(obj.isSymmetric1(root1));
 		//System.out.println(obj.hasPathSum(root,27));
-		System.out.println(obj.lowestCommonAncestor2(root,root.left.left.left,root.left).val);
+		//System.out.println(obj.lowestCommonAncestor2(root,root.left.left.left,root.left).val);
 		//System.out.println(obj.lowestCommonAncestor2(root, root.left.left.left, root.left.left.right).val);
+		//System.out.println(obj.levelOrder(root));
+		System.out.println(obj.isValidBST(root));
 		
 	}
 	
