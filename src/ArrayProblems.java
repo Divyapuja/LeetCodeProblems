@@ -449,48 +449,36 @@ public class ArrayProblems {
 	    	}
 	    	return false;
 	    }
+	    /*----------------88. MERGE SORTED ARRAYS-------------------------*/
 	    public void merge(int[] nums1, int m, int[] nums2, int n) {
-	        int i=m-1, j=n-1, k=1, l=m+n-1;;
+	        int indexA=m-1, indexB=n-1, mergedIndex=m+n-1;
 	        
-	        while(l>=0)
+	        //compare elements of nums1 and nums2 until everything is exhausted
+	        //if we insert in the beginning of nums1, we need to shift everything to the back
+	        //hence better to insert element into the back of an array
+	        while(indexA>=0 && indexB>=0)
 	        {
-	        		if(i>=0 && j>=0)
-	        		{
-	        			if(nums1[i]>nums2[j])
-		                {
-		                    nums1[m+n-k]=nums1[i];
-		                    k++;
-		                    i--;
-		                }
-	        			else if(nums2[j]>nums1[i])
-	        			{
-		                    nums1[m+n-k]=nums2[j];
-		                    k++;
-		                    j--;
-	        			}
-	        			else
-	        			{
-	        				nums1[m+n-k]=nums2[j];
-	        				k++;
-	        				j--;
-	        			}
-	        		}
-	        		else if(i>=0)
-	        		{
-	        			nums1[m+n-k]=nums1[i];
-	        			k++;
-	        			i--;
-	        		}
-	        		else if(j>=0)
-	        		{
-	        			nums1[m+n-k]=nums2[j];
-	        			k++;
-	        			j--;
-	        		}
-		             
-	        	
-	            l--;
+	        	if(nums1[indexA]>=nums2[indexB])
+	        	{
+	        		nums1[mergedIndex]=nums1[indexA];
+	        		indexA--;
+	        		mergedIndex--;
+	        	}
+	        	else
+	        	{
+	        		nums1[mergedIndex]=nums2[indexB];
+	        		indexB--;
+	        		mergedIndex--;
+	        	}
 	        }
+	        /*copy the remaining elements from b into place*/
+	        while(indexB>=0)
+	        {
+	        	nums1[mergedIndex]=nums2[indexB];
+	        	indexB--;
+	        	mergedIndex--;
+	        }
+	        
 	    }
 	    public int uniquePaths(int m, int n) {
 	        int [][] grid=new int[m][n];
@@ -741,6 +729,8 @@ public class ArrayProblems {
 			 helper[i]=nums[i];
 		 }
 		 int i=low, j=mid+1, k=low;
+		 //iterate through the helper array; compare both left and right half, copying the smaller
+		 //elements from two halves into the original array
 		 while(i<=mid && j<=high)
 		 {
 			 if(helper[i]<=helper[j])
@@ -755,6 +745,8 @@ public class ArrayProblems {
 			 }
 			 k++;
 		 }
+		 //copy the rest of the left side of the helper array to the original array
+		 //right side doesn't need to be copied since it's already there
 		 while(i<=mid)
 		 {
 			 nums[k]=helper[i];
@@ -1048,6 +1040,47 @@ public class ArrayProblems {
 	        	first++;
 	        }
 	        return foursumarray;
+	    }
+	    
+	    public List<List<Integer>> subsets(int[] nums) {
+			Arrays.sort(nums);
+	        List<List<Integer>> res = new ArrayList<List<Integer>>();
+	        List<Integer> row = new ArrayList<Integer>();
+	        res.add(row);
+	        if(nums.length>0)
+	        {
+	        	int i=0;
+	            while(i<nums.length)
+	            {
+	            	res = combineOutputs(res, nums[i]);
+	            	i++;
+	            }
+	        }
+	        return res;
+	        
+	    }
+	    
+	    public List<List<Integer>> combineOutputs(List<List<Integer>> res, int num)
+	    {
+	    	List<List<Integer>> res1= new ArrayList<List<Integer>>(); 
+	    	for(int i=0; i<res.size(); i++)
+	        {
+	            List<Integer> row = new ArrayList<Integer>();
+	            row = res.get(i);
+	            res1.add(row);
+	            //copy row to row1
+	            List<Integer> row1 = new ArrayList<Integer>();
+	            
+	            for(int j=0; j<row.size();j++)
+	            {
+	            	row1.add(row.get(j));
+	            }
+	            //add num to new row1
+	            row1.add(num);
+	            //add row1 to res
+	            res1.add(row1);
+	        }
+	    	return res1;
 	    }
 	 public static void main(String args[])
 	 {

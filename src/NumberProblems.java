@@ -97,6 +97,11 @@ public class NumberProblems {
 	        return Math.abs(num - Math.round(num)) <=10e-15;
 	        
 	    }
+	 //power of three 3^32 1162261467
+	    public boolean isPowerOfThree1(int n) {
+	        return n > 0 && (1162261467 % n == 0);
+	        
+	    }
 	 
 	 public static boolean isUgly(int num) {
 	        if(num == 1)
