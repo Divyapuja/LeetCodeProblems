@@ -1,12 +1,16 @@
 
 public class LinkedListProblems {
+	
+	/*----------206. REVERSE LINKED LIST------------------------*/
 	public  ListNode reverseList(ListNode head) {
+		//create a prev node
 	    ListNode prev = null;
 	 	ListNode temp = null;
 	 	if(head == null)
 	 	{
 	 	    return null;
 	 	}
+	 	//make all pointers toward prev node
 	 	while(head.next!=null)
     	{
     		temp = head;
@@ -18,7 +22,7 @@ public class LinkedListProblems {
 	 	return head;
     	
     }
-	
+	/*----------83. REMOVE DUPLICATES FROM SORTED LIST-------------------*/
 	public ListNode deleteDuplicates(ListNode head) {
 
 		 if(head == null)
@@ -43,106 +47,7 @@ public class LinkedListProblems {
 		 return origHead;
 	    }
 	
-	public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
-		 
-	 	ListNode tempOrig1 = l1;
-	 	ListNode tempOrig2 = l2;
-	 	if(l1 == null && l2!=null)
-        {
-            return l2;
-        }
-        else if(l1 != null && l2==null)
-        {
-            return l1;
-        }
-        else if(l1 == null && l2==null)
-        {
-        	
-        	return null;
-        }
-        else
-        {
-        	while(l1!=null)
-        	{
-        		if(l1.next != null && l2!=null)
-        		{
-        			if(l1.val <=l2.val && l2.val<=l1.next.val)
-        			{
-        				ListNode temp = new ListNode(l2.val);
-        				ListNode temp1 = l1.next;
-        				l1.next = temp;
-        				temp.next = temp1;
-        				l2 = l2.next;
-        			}
-        		}
-        		else
-        		{
-        			if(l2 !=null)
-        			{
-	        			if(l1.val <l2.val)
-	        			{
-	        				l1.next = l2;
-	        				return tempOrig1;
-	        			}
-        			}
-        			else
-        			{
-        				return tempOrig1;
-        			}
-        			
-        		}
-        		l1=l1.next;
-        	}
-        	l1 = tempOrig1;
-        	while(l2!=null)
-        	{
-        		if(l2.next != null && l1!=null)
-        		{
-        			if(l2.val <=l1.val && l1.val<=l2.next.val)
-        			{
-        				ListNode temp = new ListNode(l1.val);
-        				ListNode temp1 = l2.next;
-        				l2.next = temp;
-        				temp.next = temp1;
-        				l1 = l1.next;
-        			}
-        		}
-        		else
-        		{
-        			if(l1!=null)
-        			{
-	        			if(l2.val <l1.val)
-	        			{
-	        				l2.next = l1;
-	        				return tempOrig2;
-	        			}
-        			}
-        			else
-        			{
-        				return tempOrig2;
-        			}
-        			
-        		}
-        		l2=l2.next;
-        	}
-        }
-        
-        
-        return null;
-    } 
- 
-	 public ListNode mergeTwoLists1(ListNode l1, ListNode l2) {
-		 	if (l1 == null) return l2;
-		    if (l2 == null) return l1;
-		    
-		    ListNode head = l1.val < l2.val ? l1 : l2;
-		    ListNode nonHead = l1.val < l2.val ? l2 : l1;
-	
-		    head.next = mergeTwoLists1(head.next, nonHead);
-	
-		    return head;
-	 }
-	 
+		 /*-----------------------------234. PALINDROME LINKED LIST----------------------------*/
 	 public boolean isPalindrome(ListNode head) {
 	        	if(head == null || head.next == null)
 	        	{
@@ -157,11 +62,7 @@ public class LinkedListProblems {
 	        	}
 	        	int mid = size/2;
 	        	
-	        	/*if(size%2 == 0)
-	        	{
-	        		mid=mid-1;;
-	        	}*/
-	        	
+	        	//mid can also be found using slow and fast pointers 
 	        	ListNode rHead=null;
 		        temp = head;
 		        int i=0;
@@ -175,7 +76,7 @@ public class LinkedListProblems {
 		        	i++;
 		        }
 		        
-		        
+		        //get to the middle and then reverse the linked list
 		        rHead = reverseList(rHead);
 		        
 		        while(head!=null && rHead!=null)
@@ -190,6 +91,8 @@ public class LinkedListProblems {
 		        }
 	        return true;
 	 }
+	 
+	 /*-----------------160. INTERSECTION OF TWO LINKED LISTS--------------------------*/
 	 public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
 	        if(headA == null || headB == null){return null;}
 	        
@@ -200,7 +103,7 @@ public class LinkedListProblems {
 	        ListNode tempNodeA = headA;
 	        ListNode tempNodeB = headB;
 	        
-	        
+	        //find the min of thw two linkedList
 	        while(sizeA-- > min)
 	        {
 	        	if(tempNodeA!=null)
@@ -217,6 +120,7 @@ public class LinkedListProblems {
 	        		tempNodeB = tempNodeB.next;
 	        	}
 	        }
+	        //once the min is find, do the iteration to find the intersection
 	        while(tempNodeA!=null)
 	        {
 	        	if(tempNodeA == tempNodeB) return tempNodeA;
@@ -252,7 +156,7 @@ public class LinkedListProblems {
 	        
 	        return 0;
 	    }
-	 
+	    /*----------------141. LINKED LIST CYCLE----------------------*/
 	    public boolean hasCycle(ListNode head) {
 	    	if(head == null || head.next == null){return false;}
 	        ListNode slow = head;
@@ -270,7 +174,7 @@ public class LinkedListProblems {
 	        
 	        return false;
 	    }
-	    
+	    /*----------------------SORTING A LINKED LIST---------------------*/
 	    public ListNode sortList(ListNode head)
 	    {
 	        if(head == null || head.next == null) return head;
@@ -285,16 +189,24 @@ public class LinkedListProblems {
 	        ListNode slowNext = slow.next;
 	        slow.next = null;
 	        
+	        //divide the list into two parts recursively
+	        //start till mid
 	        ListNode node1 = sortList(head);
+	        //mid to till last
 	        ListNode node2 = sortList(slowNext);
+	        //start merging
 	        return merge(node1, node2);
 	    }
+	    
+	    /*---------------------------------21. MERGE TWO SORTED LISTS--------------------*/
 	    public ListNode merge(ListNode node1, ListNode node2)
 	    {
+	    	//take a node head
 	    	ListNode head = new ListNode(0);
 	    	ListNode curr = head;
 	    	while(node1 !=null && node2!=null)
 	    	{
+	    		//if node1 is less than node2 append it to curr
 	    		if(node1.val < node2.val)
 	    		{
 	    			curr.next = node1;
@@ -302,17 +214,17 @@ public class LinkedListProblems {
 	    		}
 	    		else
 	    		{
+	    			//if node2 is less than node1, append it to curr
 	    			curr.next = node2;
 	    			node2 = node2.next;
 	    		}
 	    		curr = curr.next;
 	    	}
-	    	
+	    	//traverse node1 since node2 is completed
 	    	if(node1 != null) curr.next = node1;
+	    	//traverse node2 since node1 is completed
 	        if(node2 != null) curr.next = node2;
-	        
 	    	return head.next;
-	    	
 	    }
 	    
 	    public ListNode rotateRight(ListNode head, int k) {

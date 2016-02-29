@@ -74,7 +74,7 @@ public class StringProblems {
             return sum;
         }
     }
-	
+	/*----------------------------13. ROMAN TO INTEGER--------------------------*/
 	public static int romanToInt(String s) {
         HashMap<String, Integer> romans=new HashMap<String, Integer>();
         romans.put("I",1);
@@ -113,88 +113,42 @@ public class StringProblems {
         
         return val;
     }
-	
-	public boolean isPalindrome(String s) {
-        if(s.equals(""))
-        {
-            return true;
-        }
-        
-        String forward = new String("");
-        String backward = new String("");
-        
-        s=alphaNumericValue(s);
-        
-        int mid = s.length()/2;
-        
-        for(int i=0; i<mid; i++)
-        {
-            forward+=s.charAt(i);
-        }
-        for(int i=s.length()-1; i>mid; i--)
-        {
-            backward+=s.charAt(i);
-        }
-        if(forward.toLowerCase().equals(backward.toLowerCase()))
-        {
-            return true;
-        }
-        
-        return false;
-    } 
-	
+	/*------------------------------------125. VALID PALINDROME------------------------*/
 	public boolean isPalindrome1(String s) {
         if(s == null)
         {
         	return false;
         }
-        String forward = new String("");
-        String backward = new String("");
-        
         int left=0;
         int right=s.length()-1;
         int i=0;
         while(left<right)
         {
+        	//ignore alphanumeric characters from the left side
         	if(!isAlphaNumericValue(s.charAt(left)))
         	{
         		left++;
         	}
+        	//ignore alphanumeric characters from the right side
         	else if(!isAlphaNumericValue(s.charAt(right)))
         	{
         		right--;
         	}
+        	//compare alphanumeric chars from left and right. if they are unequal return false: not a valid palindrome
         	else if(Character.toLowerCase(s.charAt(left))!=Character.toLowerCase(s.charAt(right)))
         	{
         		return false;
         	}
         	else
         	{
+        		//keep incrementing from left and decrementing from right
         		left++;
         		right--;
         	}
         }
-        
-        
+        //returns true if everything matches
         return true;
     } 
-
-	public String alphaNumericValue(String s)
-	{
-		String s1=new String("");
-		for(int i=0; i<s.length(); i++)
-		{
-			if( (s.charAt(i) >= 48 && s.charAt(i)<=57) || 
-				(s.charAt(i) >= 65 && s.charAt(i)<=90) || 
-				(s.charAt(i) >= 97 && s.charAt(i)<=122))
-			{
-				s1+=s.charAt(i);
-			}
-		}
-		
-		return s1;
-	}
-
 	public boolean isAlphaNumericValue(char c)
 	{
 			if( (c >= 48 && c<=57) || 
@@ -203,10 +157,9 @@ public class StringProblems {
 			{
 				return true;
 			}
-		
-		
 		return false;
 	}
+	/*--------------------------14. LONGEST COMMON PREFIX----------------------------*/
 	//{"a", "a", "b"} return "a"
 	//{"a","a"} return "a"
 	//{"ac", "ac", "a", "a"} return "a"
@@ -227,13 +180,14 @@ public class StringProblems {
 			String first = new String(strs[0]);
 			String last = new String(strs[strs.length-1]);
 			
+			//swap if the first string is larger than the second string
 			if(first.length()>last.length())
 			{
 				String temp =first;
 				first = last;
 				last = temp;
 			}
-			
+			//compare characters from two string..same chars append to a new string..on mismatch return the new string
 			for(int i=0;i<first.length();i++)
 			{
 				if(first.charAt(i)==last.charAt(i))
@@ -245,60 +199,11 @@ public class StringProblems {
 					break;
 				}
 			}
-			
 		}
     	return result;
     }
+	/*---------------------------67. ADD BINARY----------------------------------*/
 	public String addBinary(String a, String b) {
-    
-		if(a.length()==0 && b.length()==0)
-		{
-			return "";
-		}
-		else if(a.length()==0 && b.length()>0)
-		{
-			return b;
-		}
-		else if(a.length()>0 && b.length()==0)
-		{
-			return a;
-		}
-		else
-		{
-			int dec1 = conversionBinaryToDecimal(Integer.parseInt(a));
-			int dec2 = conversionBinaryToDecimal(Integer.parseInt(b));
-			return String.valueOf(conversionDecimalToBinary(dec1+dec2));
-			
-		}
-		
-	}
-	public int conversionBinaryToDecimal(int bin)
-	{
-		int dec=0;
-		int i=0;
-		while(bin!=0)
-		{
-			int mod = bin%10;
-			dec = dec+ mod*(int)Math.pow(2, i);
-			i++;
-			bin = bin/10;
-		}
-		return dec;
-	}
-	public int conversionDecimalToBinary(int dec)
-	{
-		int bin=0;
-		int i=0;
-		while(dec!=0)
-		{
-			int mod = dec%2;
-			bin = bin + mod*(int)Math.pow(10, i);
-			i++;
-			dec = dec/2;
-		}
-		return bin;
-	}
-	public String addBinary1(String a, String b) {
 		
 		if(a.length()==0 && b.length()==0)
 		{
@@ -321,8 +226,10 @@ public class StringProblems {
 			int aNum=0;
 			int bNum=0;
 			int cNum =0;
+			//continue till the longer string finishes..hence max of a and b is chosen
 			while(Math.max(aLen, bLen)>0)
 			{
+				//get a digit from a
 				if(aLen>0)
 				{
 					aNum = a.charAt(aLen-1)-'0';
@@ -332,6 +239,7 @@ public class StringProblems {
 				{
 					aNum=0;
 				}
+				//get a digit from b
 				if(bLen>0)
 				{
 					bNum = b.charAt(bLen-1)-'0';
@@ -341,8 +249,11 @@ public class StringProblems {
 				{
 					bNum =0;
 				}
+				//add both the digits with a carry over
 				cNum = aNum + bNum +carry;
+				//put the resultant value without carry over
 				result = result+String.valueOf(cNum%2);
+				//store the updated carry over
 				carry = cNum/2;
 			}
 			if(carry ==1)
@@ -350,6 +261,7 @@ public class StringProblems {
 				result = result+String.valueOf(1);
 			}
 			
+			//reverse the value to get the actual result
 			String result1 = new String("");
 			for(int i=result.length()-1; i>=0;i--)
 			{
@@ -359,7 +271,7 @@ public class StringProblems {
 			return result1;
 		}
 	}
-	
+	/*-----------------------------20. VALID PARENETHESIS---------------------------------*/
 	public boolean isValid(String s) {
 		Stack<String> arr = new Stack<String>();
 		int errCount=0;
@@ -367,10 +279,12 @@ public class StringProblems {
         {
         	for(int i=0; i<s.length();i++)
         	{
+        		//push all openings into a stack
         		if(s.charAt(i)== '(' || s.charAt(i)== '[' ||s.charAt(i)== '{')
         		{
         			arr.push(String.valueOf(s.charAt(i)));
         		}
+        		//if a closing comes, check if the top of the stack has the same kind of opening
         		else if(s.charAt(i)== ')')
         		{
         			errCount++;
@@ -415,6 +329,7 @@ public class StringProblems {
     	}
     	return false;
     }
+	/*-------------------------165. COMPARE VERSION NUMBERS-------------------------------------*/
 	//compare version 0.1, 0.0.1, 0.0.0.2
 	public int compareVersion(String version1, String version2) {
     
@@ -423,6 +338,8 @@ public class StringProblems {
 		{
 			StringTokenizer st1 = new StringTokenizer(version1,".");
 			StringTokenizer st2 = new StringTokenizer(version2,".");
+			//compare each integer from two string..if one is larger return 1 else return -1
+			//if same return 0
 			while(st1.hasMoreElements() || st2.hasMoreElements())
 			{
 				int token1=0, token2=0;
@@ -450,22 +367,21 @@ public class StringProblems {
 		}
 		return 0;
     }
-	
+	/*--------------------38. COUNT AND SAY------------------------------------*/
+	//1, 11, 21, 1211, 111221,
+	//do a DP
 	 public String countAndSay(int n) {
 		 	String seq = new String("1");
 			for(int i=1;i<n;i++)
 			{
+				//DP
 				seq = genNextSequence(seq);
 			}
-		 	
 		 	return seq;
-	        
 	    }
-	 
 	 public String genNextSequence(String num)
 	 {
 		 	int[] count = new int[10];
-	       
 	        String seq = new String();
 	        int i=0;
 	        while(i<num.length())
@@ -477,12 +393,15 @@ public class StringProblems {
 	        	{
 	        		next = num.charAt(i+1);
 	        	}
+	        	//keep counting till curr char is same as next
 	            if(curr == next)
 	            {
 	                count[curr1]=count[curr1]+1;
 	            }
 	            else
 	            {
+	            	//if curr char is not the same as next
+	            	//update the string
 	            	count[curr1]=count[curr1]+1;
 	                if(count[curr1]>1)
 	                {
@@ -490,21 +409,24 @@ public class StringProblems {
 	                }
 	                else
 	                {
+	                	//if singular or just one number
 	                    seq=seq+("1"+curr1);
 	                }
+	                //update the char value
 	                count[curr1]=0;
 	            }
 	            i++;
 	        }
-	        
 	        return seq;    
 	 }
+	 /*---------------------------58. LENGTH OF THE LAST WORD------------------------*/
 	 public int lengthOfLastWord(String s) {
 	        s= s.trim();
 	        int count=0, temp=0;
 	        int i = s.length()-1;
 	        if(i>=0)
 	        {
+	        	//start from the last character
 		        while(i>=0)
 		        {
 		        	if(s.charAt(i)==' ')
@@ -516,13 +438,17 @@ public class StringProblems {
 		            i--;
 		        }
 	        }
-	        
-	        
 	        return temp = (temp>0)?temp:count;
-	    }
+	}
 	
 	
-	
+	/*----------------------------6. ZIGZAG CONVERSION------------------------------*/
+	 //"PAYPALISHIRING"
+	 //P   A   H   N
+	 //A P L S I I G
+	 //Y   I   R
+	 //output: "PAHNAPLSIIGYIR"
+	 //pattern is for numRows 3 is 4, 2, 4
 	public String convert(String s, int numRows) {
         //initialize
 		if(numRows==1) return s;
@@ -586,6 +512,7 @@ public class StringProblems {
         
         return array;
     }
+    /*---------------8. STRING TO INTEGER (ATOI)----------------------------*/
     public int myAtoi(String str) {
         
     	str = str.trim();
@@ -594,10 +521,11 @@ public class StringProblems {
         int sign=1;
         boolean posSign=false;
         int j=0;
+        //first identify the sign
         if(str.charAt(0)=='-') {sign=-1;j=1;}
         if(str.charAt(0)=='+') {sign=1;j=1;}
         
-        
+        //then compute the integer
         long n=0,i=str.length()-1;
         while(j<str.length())
         {
@@ -617,8 +545,6 @@ public class StringProblems {
              }
             j++;
         }
-        
-       
      return (int) ((int) sign*n);      
     }
     //naive method of finding substring
@@ -670,6 +596,7 @@ public class StringProblems {
 	        
 	        return -1;
 	    }
+	/*----------------------------------28. IMPLEMENT strSTR()-----------------------------------*/
     //finding substring using KMP algorithm
 	//O(m+n)
 	public int strStr(String haystack, String needle) {
@@ -736,108 +663,7 @@ public class StringProblems {
 		
 		return array;
 	}
-	//Dont consider the method
-	public String multiply(String num1, String num2) {
-	    int i=num2.length()-1;
-	    int count=0;
-	    String sum = new String("0");
-	    if(num1.length()>0 && num2.length()>0)
-	    {
-	        while(i>=0)
-	        {
-	            int num21 = num2.charAt(i)-'0';
-	            String stepSum = stepMultiply(num1, num21);
-	            stepSum = reverse(stepSum);
-	            stepSum = addZeros(stepSum, count);
-	            sum = computeSum(sum, stepSum);
-	            sum= reverse(sum);
-	            count++;
-	            i--;
-	        }
-	    }   
-	     return sum;    
-	    }
-	    public String computeSum(String sum, String stepSum)
-	    {
-	        if(sum.length()==0 && stepSum.length()==0) return "";
-	        if(sum.length()>0 && stepSum.length()==0) return sum;
-	        if(sum.length()==0 && stepSum.length()>0) return stepSum;
-	        
-	        String newSum = new String();
-	        if(sum.length()>0 && stepSum.length()>0)
-	        {
-	            int aLen = sum.length();
-	            int bLen = stepSum.length();
-	            int aNum=0, bNum=0, cNum=0;
-	            int carry=0;
-	            while(Math.max(aLen, bLen)>0)
-	            {
-	                if(aLen>0)
-	                {
-	                    aNum = sum.charAt(aLen-1)-'0';
-	                    aLen--;
-	                }
-	                else
-	                {
-	                    aNum=0;
-	                }
-	                if(bLen>0)
-	                {
-	                    bNum = stepSum.charAt(bLen-1)-'0';
-	                    bLen--;
-	                }
-	                else
-	                {
-	                    bNum =0;
-	                }
-	                cNum = aNum + bNum + carry;
-	                newSum = newSum + String.valueOf(cNum%10);
-	                carry = cNum/10;
-	            }
-	            if(carry>0)
-	            {
-	            	newSum= newSum+String.valueOf(carry);
-	            }
-	        }
-	        
-	        return newSum;
-	    }
-	    public String addZeros(String stepSum, int count)
-	    {
-	        int i=0;
-	        if(stepSum.equals("0")) return "0";
-	        if(stepSum.length()>0)
-	        {
-	            while(i<count)
-	            {
-	                stepSum = stepSum+0;
-	                i++;
-	            }
-	        }
-	        return stepSum;
-	    }
-	    public String stepMultiply(String num1, int num21)
-	    {
-	        if(num21==0) return "0";
-	        //if(num21==1) return num1;
-	        
-	        int i=num1.length()-1;
-	        int carry=0;
-	        String sumStr = new String();
-	        while(i>=0)
-	        {
-	        	int num11=num1.charAt(i)-'0';
-	            int sum = carry + num21 * num11 ;
-	            sumStr = sumStr + String.valueOf(sum%10);
-	            carry = sum/10;
-	            i--;
-	        }
-	        if(carry>0)
-	            {
-	                sumStr= sumStr+String.valueOf(carry);
-	            }
-	        return sumStr;
-	    }
+	/*--------------------------------------------REVERSE A STRING----------------------------------------*/    
 	    public String reverse(String str)
 	    {
 	    	char[] array = str.toCharArray();
@@ -854,7 +680,7 @@ public class StringProblems {
 	    	return new String(array);
 	    }
 	
-	    //multiply two nos
+	    /*------------------------------43. MULTIPLY STRINGS-----------------------------*/
 	    public String multiply1(String num1, String num2)
 	    {
 	    	int len1=num1.length();
@@ -863,15 +689,20 @@ public class StringProblems {
 	    	int sum=0, mul=0;
 	    	for(int i=len1-1; i>=0;i--)
 	    	{
-	    		for(int j=len1-1; j>=0;j--)
+	    		for(int j=len2-1; j>=0;j--)
 	    		{
+	    			//last but 1 digit
 	    			int p1=i+j;
+	    			//last digit
 	    			int p2=i+j+1;
 	    			
 	    			mul = (num1.charAt(i)-'0') * (num2.charAt(j)-'0');
+	    			
 	    			sum = mul + array[p2];
 	    			
+	    			//carry over
 	    			array[p1]+=sum/10;
+	    			//last digit
 	    			array[p2]=sum%10;
 	    		}
 	    	}
@@ -883,6 +714,7 @@ public class StringProblems {
 	        return sb.length() == 0 ? "0" : sb.toString();
 	    }
 	    
+	    /*--------------------------3. LONGEST SUBSTRING WITHOUT REPEATING CHARACTERS-----------------------------*/
 	    //length of the longest substring without duplicates
 	    public int lengthOfLongestSubstring(String s) {
 	    	if(s.length()==0) return 0;
@@ -907,6 +739,7 @@ public class StringProblems {
 	        return max;
 	    }
 	    
+	    /*-----------------------93. RESTORE IP ADDRESSES-----------------------------*/
 	    public List<String> restoreIpAddresses(String s) {
 	    	List<String> res=new ArrayList<String>();
 	    	
@@ -938,7 +771,12 @@ public class StringProblems {
 	    	}
 	        return res;
 	    }
-	   
+	    public boolean valid(String str)
+	    {
+	    	if(str.length()>3 || str.length()==0|| (str.charAt(0)=='0' && str.length()>1) || Integer.parseInt(str)>255)
+	    		return false;
+	    	return true;
+	    }
 	    //naive solution or brute force
 	    
 	    public boolean validPalindrome(String str) {
@@ -955,41 +793,8 @@ public class StringProblems {
 		
 			return true;
 		}
-	    public boolean valid(String str)
-	    {
-	    	if(str.length()>3 || str.length()==0|| (str.charAt(0)=='0' && str.length()>1) || Integer.parseInt(str)>255)
-	    		return false;
-	    	return true;
-	    }
-	    
-	
-	    //optimize
-	    public String longestPalindrome1(String s) {
-	    	if(s.length()==1) return s;
-	    	
-	    	String longest = new String();
-	    	int max=0;
-	    	
-	    	for(int i=0; i<s.length(); i++)
-	    	{
-	    		for(int j=i+1; j<s.length(); j++)
-	    		{
-	    			//construct a string
-	    			String str=s.substring(i,j);
-	    			//check if it's palindrome
-	    			if(validPalindrome(str))
-	    			{
-		    			if(str.length()>max)
-		    			{
-		    				max=str.length();
-		    				longest=str;
-		    			}
-	    			}
-	    		}
-	    	}
-	    	
-	    	return longest;
-	    }
+	   
+	    /*---------------------------5. LONGEST PALINDROMIC SUBSTRING----------------------------*/
 	    public String longestPalindrome(String s) {
 	    	if(s.length()==1) return s;
 	    	
@@ -998,7 +803,7 @@ public class StringProblems {
 	    	
 	    	for(int i=0; i<s.length()-1; i++)
 	    	{
-	    			//construct a string
+	    			//construct a string with odd length
 	    			String str = validPalindrome(s,i,i);
 	    			//check if it's palindrome
 	    				if(str.length()>max)
@@ -1007,7 +812,7 @@ public class StringProblems {
 		    				longest=str;
 		    			}
 	    			
-	    			//construct a string
+	    			//construct a string with even length
 	    			String str1=validPalindrome(s,i,i+1);
 	    			//check if it's palindrome
     				if(str1.length()>max)
@@ -1030,6 +835,7 @@ public class StringProblems {
 		return str.substring(left+1,right);
 	}
 	    
+	    /*----------------------------17. LETTER COMBINATIONS OF A PHONE NUMBER----------------------------------*/
 	    public List<String> letterCombinations(String digits) {
 	        List<String> res = new ArrayList<String>();
 	        
@@ -1119,6 +925,7 @@ public class StringProblems {
 	    	return String.valueOf(c);
 	    }
 	    
+	    /*------------------151. REVERSE WORDS IN A STRING-----------------------*/
 	    public String reverseWords(String s) {
 	    	s =s.replaceAll("\\s+", " ").trim();
 	    	
@@ -1126,7 +933,7 @@ public class StringProblems {
 	        
 	        String snew=new String("");
 	        s = reverse(s);
-	        int i=0; int j=0;
+	        int i=0; int j=0;//using slow and fast pointers get a word from the reversed string
 	        while(i<s.length() && j<s.length())
 	        {
 	           if(s.charAt(j)==' ')
@@ -1148,6 +955,7 @@ public class StringProblems {
 	        
 	        return snew;
 	    }
+	    /*-----------------------72. EDIT DISTANCE---------------------------*/
 	    public int minDistance(String word1, String word2) {
 	        int len1 = word1.length();
 	        int len2 = word2.length();
@@ -1172,11 +980,14 @@ public class StringProblems {
 	            {
 	                if(word1.charAt(i-1)==word2.charAt(j-1))
 	                {
+	                	//diagnoal
 	                    d[i][j]=d[i-1][j-1];
 	                }
 	                else
 	                {
 	                	min =0;
+	                	//check the min from left, top, and diag
+	                	//increment min by 1
 	                	min = Math.min(d[i-1][j],d[i][j-1]);
 	                	min = Math.min(min,d[i-1][j-1]);
 	                    d[i][j] = min+1;
@@ -1210,7 +1021,7 @@ public class StringProblems {
 		//System.out.println(obj.lengthOfLastWord("a"));
 		//System.out.println(obj.convert("ABCDE", 4));
 		//System.out.println(obj.strStr("abxabcabcaby","abcaby"));
-		//System.out.println(obj.multiply1("0","52"));
+		System.out.println(obj.multiply1("43","69"));
 		//System.out.println(obj.lengthOfLongestSubstring("pwwkew"));
 		//String s=new String("010010");
 		//System.out.println(obj.restoreIpAddresses(s));
@@ -1219,7 +1030,7 @@ public class StringProblems {
 		//String[] strs={"eat", "tea", "tan", "ate", "nat", "bat"};
 		//System.out.println(obj.groupAnagrams(strs));
 		//System.out.println(obj.reverseWords("  a  b "));
-		System.out.println(obj.minDistance("sunday", "saturday"));
+		//System.out.println(obj.minDistance("sunday", "saturday"));
 		
 		
 	}

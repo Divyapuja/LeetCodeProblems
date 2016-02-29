@@ -70,16 +70,17 @@ public class ArrayProblems {
 	    }
 	    return majority;
 	}
+	
+	/*----------------217. CONTAINS DUPLICATE------------------------*/
 	public static boolean containsDuplicate(int[] nums) {
-        
         HashMap<Integer, Integer> hmap = new HashMap<Integer, Integer>();
-        
             for(int i=0;i<nums.length;i++)
             {
                 if(hmap.get(nums[i]) !=null)
                 {
                     if(hmap.get(nums[i])>0)
                     {
+                    	//found a copy
                         return true;
                     }
                     else
@@ -93,16 +94,16 @@ public class ArrayProblems {
                 	hmap.put(nums[i], 1);
                 }
             }
-        
-		return false;
+            return false;
     }
-	public static boolean containsDuplicate2(int[] nums) {
-		
+	/*----------------217. CONTAINS DUPLICATE------------------------*/
+	public static boolean containsDuplicate1(int[] nums) {
 		 HashMap<Integer, Integer> hmap = new HashMap<Integer, Integer>();
 		 for(int i=0;i<nums.length;i++)
          {
 			 if(hmap.containsKey(nums[i]))
 			 {
+				 //found a copy
 				 return true;
 			 }
 			 else
@@ -112,8 +113,8 @@ public class ArrayProblems {
          }
 		return false;
 	}
-
-	public boolean containsDuplicate1(int[] nums) {
+	/*----------------217. CONTAINS DUPLICATE------------------------*/
+	public boolean containsDuplicate2(int[] nums) {
     
 		List<Integer> newObj= new ArrayList<Integer>();
 		
@@ -128,6 +129,17 @@ public class ArrayProblems {
 	   }
 	   return false;
 	}
+	/*----------------217. CONTAINS DUPLICATE------------------------*/
+	//without using an hashmap
+	public boolean containsDuplicate3(int[] array) {
+        int arraylength = array.length;
+        if(arraylength <= 1) return false;
+        Arrays.sort(array);
+        for(int i = 0; i < arraylength - 1; i++)
+        	//find duplicate
+            if(array[i] == array[i + 1]) return true;
+        return false;
+    }
 	
 	//find if pair sums to 0
 	public boolean twoSum(int[] nums)
@@ -178,6 +190,8 @@ public class ArrayProblems {
 		}
 		return array;
 	}
+	
+	/*-------------66. PLUS ONE----------------------------------*/
 	public int[] plusOne(int[] digits) {
         if(digits.length>0)
         {
@@ -201,6 +215,7 @@ public class ArrayProblems {
             }
             else
             {
+            	//add nos to a new array
                 int[] digits1=new int[digits.length+1];
                 digits1[0]=carry;
                 for(int i=0; i<digits.length-1; i++)
@@ -214,45 +229,18 @@ public class ArrayProblems {
         return digits;
     }
 	
+	
+	/*------------189. ROTATE ARRAY---------------------*/
+	//eg: n=1,2,3,5,6,7 and k=3, nout=5,6,7,1,2,3,4
 	public void rotate(int[] nums, int k) {
-        int index = 0;
-        int distance = 0;
-        int cur = 0;
-        for (int i = 0; i < nums.length; i++){
-            int next = (index+k)%nums.length;
-            int temp = nums[next];
-            nums[next] = nums[cur];
-            nums[cur] = temp;
-            index = next;
-            
-            distance=(distance+k)%nums.length;
-            if (distance == 0){
-                index = (index+1)%nums.length;
-                cur = index;
-            }
-            
-            /*for(int j=0; j<nums.length;j++)
-            {
-            	System.out.print(nums[j]);
-            }*/
-            //System.out.println(", index="+index+", curr="+cur+", dist="+distance);
-            
-        }
-        
-    }
-	//best solution for rotation
-	public void rotate1(int[] nums, int k) {
 
 	    if(nums == null || nums.length < 2){
 	        return;
 	    }
-
 	    k = k % nums.length;
 	    reverse(nums, 0, nums.length - 1);
 	    reverse(nums, 0, k-1);
 	    reverse(nums, k, nums.length - 1);
-	    
-
 	}
 	//reversing an array
 	private void reverse(int[] nums, int i, int j){
@@ -266,10 +254,10 @@ public class ArrayProblems {
 	    }
 	}
 	
-	//remove elemenet and print the remaning content of the array
+	/*---------------27. REMOVE ELEMENT-------------------------*/
+	//remove element and print the remaining content of the array
 	public int removeElement(int[] nums, int val) {
         int lastIndex = nums.length - 1;
-
         for (int i = 0; i < lastIndex + 1; i++)
         {
             if (nums[i] == val)
@@ -279,15 +267,21 @@ public class ArrayProblems {
                 i--;
             }
         }
-
         return lastIndex + 1;
     }
-	public int removeDuplicates(int[] nums, int val) {
-		
-		
-		return 0;
+	public int removeElement1(int[] nums, int val) {
+	    int len = 0;
+	    for(int num: nums) {
+	        if(num != val) {
+	            nums[len] = num;
+	            len++;
+	        }
+	    }
+	    return len;
 	}
 	
+	/*---------------26. REMOVE DUPLICATES FROM SORTED ARRAY-------------------*/
+	//input nums=[1,1,2] output=2
 	public int removeDuplicates(int[] nums) {
         int size=nums.length;
         int available =size;
@@ -311,9 +305,22 @@ public class ArrayProblems {
                 j++;
             }
         }
-        
         return available;
     }
+	public int removeDuplicates1(int[] nums) {
+
+        int i = 1; //iterator thru array
+        int j = 0; //current index
+        for (; i<nums.length; i++) { 
+            if (nums[i] != nums[j]) { //new number
+                j++; //move current index
+                nums[j] = nums[i]; //fill current index with new number
+            } 
+        }
+    return j+1;
+   }
+	/*-----------------------228. SUMMARY RANGES------------------------------*/
+	//given [0,1,2,4,5,7] return ["0->2", "4->5", "7"]
 	public List<String> summaryRanges(int[] nums) {
         List<String> summary=new ArrayList<String>();
         int size=nums.length;
@@ -330,7 +337,7 @@ public class ArrayProblems {
         }
         while(i<size && j<size)
         {
-            
+            //if diff is 1
             if(nums[j]-nums[i]==1)
             {
                 if(j==size-1)
@@ -360,18 +367,26 @@ public class ArrayProblems {
                 }
             }
         }
-        
-        
         return summary;
     }
+	/*---------------------118. PASCAL TRIANGLE--------------------------------*/
+	/*	[
+		 [1],
+		[1,1],
+	   [1,2,1],
+      [1,3,3,1],
+     [1,4,6,4,1]
+      ]*/
 	 public List<List<Integer>> generate(int numRows) {
 	        List<List<Integer>> pascal = new ArrayList<List<Integer>>();
+	        //initialize first row
 	        if(numRows-1>0 ||numRows==1)
 	        {
 	            List<Integer> row = new ArrayList<Integer>();
 	            row.add(1);
 	            pascal.add(row);
 	        }
+	        //initialize second row
 	        if(numRows-2>0 || numRows==2)
 	        {
 	            List<Integer> row = new ArrayList<Integer>();
@@ -379,6 +394,7 @@ public class ArrayProblems {
 	            row.add(1);
 	            pascal.add(row);
 	        }
+	        //find next rows
 	        for(int i=2; i<numRows;i++)
 	        {
 	        	if(pascal.size()==i)
@@ -428,6 +444,7 @@ public class ArrayProblems {
             return Arrays.asList(rowList);
         }
 	    
+	    /*-------------------219. CONTAINS DUPLICATE II-------------------------------*/
 	    public boolean containsNearbyDuplicate(int[] nums, int k) {
 	    	int size = nums.length;
 	    	Hashtable<Integer, Integer> store=new Hashtable<Integer, Integer>();  
@@ -480,6 +497,7 @@ public class ArrayProblems {
 	        }
 	        
 	    }
+	    /*---------62. UNIQUE PATHS------------------------*/
 	    public int uniquePaths(int m, int n) {
 	        int [][] grid=new int[m][n];
 	        for(int i=0;i<m;i++)
@@ -494,12 +512,13 @@ public class ArrayProblems {
 	        }
 	        return grid[m-1][n-1];
 	    }
-	    
+	    /*---------63. UNIQUE PATHS II------------------------*/
 	    public int uniquePathsWithObstacles(int[][] obstacleGrid) {
 	    	
 	    	int m=obstacleGrid.length;//row
 	    	int n=obstacleGrid[0].length;
 	    	int s[][]=new int[m][n];
+	    	//initialize with
 	    	s[0][0]=obstacleGrid[0][0]==0? 1:0;
 	    	for(int i=0;i<m;i++)
 	    	{
@@ -511,10 +530,12 @@ public class ArrayProblems {
 	    			}
 	    			else if(i>0 && j==0)
 	    			{
+	    				//the first row is initialize with 1
 	    				s[i][0]=s[i-1][0];
 	    			}
 	    			else if(i==0 && j>0)
 	    			{
+	    				//the first column is initialized with 1
 	    					s[0][j]=s[0][j-1];
 	    			}
 	    			else if(i>0 & j>0)
@@ -523,10 +544,10 @@ public class ArrayProblems {
 	    			}
 		    	}
 	    	}
-	    	
-	    	
 	    	return s[m-1][n-1];
 	    }
+	    /*-----------------------209. MINIMUM SIZE SUBARRAY SUM------------------------*/
+	    //array [2,3,1,2,4,3] s=7  output=2 i.e., [4,3]
 	    public int minSubArrayLen(int s, int[] nums) {
 	       int minLength = Integer.MAX_VALUE;
 	       int left=0, right=0, slidingSum=0;
@@ -546,9 +567,12 @@ public class ArrayProblems {
 	    		   left++;
 	    	   }
 	       }
-	       
 	       return minLength == Integer.MAX_VALUE? 0:minLength;
 	    }
+	    
+	    /*-----------------------15. 3SUM-----------------------------*/
+	    //S={-1, 0, 1, 2, -1, -4} solution set is (-1, 0, 1) and (-1, -1, 2)
+	    //has a double loop O(n^2)
 	    public List<List<Integer>> threeSum(int[] nums) {
 	        List<List<Integer>> threesumarray = new ArrayList<List<Integer>>();
 	        int size=nums.length;
@@ -583,6 +607,8 @@ public class ArrayProblems {
 	        }
 	        return threesumarray;
 	    }
+	    
+	    /*-------------------73. SET MATRIX ZEROES------------------------------*/
 	    public void setZeroes(int[][] matrix) {
 	    	Hashtable<Integer,Integer> lookup=new Hashtable<Integer,Integer>();
 	        int m=matrix.length;
@@ -642,6 +668,7 @@ public class ArrayProblems {
 	        }
 	        
 	    }
+	    /*-------------------73. SET MATRIX ZEROES------------------------------*/
 	    //put markers on first column and row
 	    //check from next column and row
 	    //put zeros accordingly
@@ -676,21 +703,21 @@ public class ArrayProblems {
 	            }
 	        }
 	    }
-	    
+	    /*-----35. SEARCH INSERT POSITION-----------------------------*/
+	    //[1,3,5,6], 5->2
+	    //[1,3,5,6], 2->1
 	    public int searchInsert(int[] nums, int target) {
 	        if (nums == null || nums.length == 0) {
 	            return 0;
 	        }
-
 	        return binarySearch(nums, 0, nums.length - 1, target);
-
 	    }
 
 	    private int binarySearch(int[] nums, int start, int end, int target) {
+	    	//key is here..if not found return start
 	        if(start > end){
 	            return start;
 	        }
-
 	        int mid = (start + end) / 2;
 	        if (nums[mid] == target) {
 	            return mid;
@@ -700,7 +727,8 @@ public class ArrayProblems {
 	            return binarySearch(nums, mid + 1, end, target);
 	        }
 	    }
-	    
+	    //not a great solution
+	 /*-----------------------------------MERGE SORT-------------------------------*/  
 	 public void sort(int []nums, int[] helper)
 	 {
 		 if(nums.length>0)
@@ -754,7 +782,7 @@ public class ArrayProblems {
 			 i++;
 		 }
 	 }
-	 
+	 /*-------------------33. SEARCH IN ROTATED SORTED ARRAY---------------------------*/
 	 public int search(int[] nums, int target) {
 	        
 		 	int ret = rBinarySearch(0, nums.length-1, nums, target );
@@ -778,10 +806,12 @@ public class ArrayProblems {
 		 {
 			 if(target>=nums[low] && target<=nums[mid])
 			 {
+				 //normal binary search
 				 return rBinarySearch(low, mid-1, nums, target);
 			 }
 			 else
 			 {
+				 //search in a rotated array
 				 return rBinarySearch(mid+1, high, nums, target);
 			 }
 		 }
@@ -790,10 +820,12 @@ public class ArrayProblems {
 		 {
 			 if(target>=nums[mid]&& target<=nums[high])
 			 {
+				 //normal binary search in a sorted array
 				 return rBinarySearch(mid+1, high, nums, target);
 			 }
 			 else
 			 {
+				 //search in a rotated array
 				 return rBinarySearch(low, mid-1, nums, target);
 			 }
 		 }
@@ -801,7 +833,8 @@ public class ArrayProblems {
 		 return -1;
 	 }
 	  
-	 //allow duplicates in rotated array
+	 /*-------------------81. SEARCH IN ROTATATED SORTED ARRAY II---------------------------*/
+	 //find duplicates
 	 public boolean search1(int[] nums, int target) {
 	        
 		 	boolean ret = rBinarySearch1(0, nums.length-1, nums, target );
@@ -866,23 +899,20 @@ public class ArrayProblems {
 		 
 		 return false;
 	 }
+	 /*---------------------34. SEARCH FOR A RANGE----------------------------*/
 	 public int[] searchRange(int[] nums, int target) {
 	        
 	        int[] range=new int[2];
 	        range[0]=-1;
 	        range[1]=-1;
-	        
 	        range = getSearchRange(0, nums.length-1, nums, target, range);
-	        
-	        
 	        return range;
 	    }
 	    public int[] getSearchRange(int low, int high, int[] nums, int target, int[] range)
 	    {
 	        if(low>high) return range;
-	        
 	            int mid=(low+high)/2;
-	            
+	            //if target is found search across both the sides of the target, i.e., both left and right
 	            if(nums[mid]==target)
 	            {
 	            	if(range[0]==-1 || mid<range[0])range[0]=mid;
@@ -911,13 +941,18 @@ public class ArrayProblems {
 	            else if(nums[mid]<target)
 	            {
 	            	return getSearchRange(mid+1, high, nums, target, range);
-	                
 	            }
 	            else
 	            {
 	            	return getSearchRange(low, mid-1, nums, target, range);
 	            }
 	    }
+	    /*--------------------74. SEARCH A 2D MATRIX------------------------*/
+	    /*[
+	     [1,   3,  5,  7],
+	     [10, 11, 16, 20],
+	     [23, 30, 34, 50]
+	     ]*/
 	    public boolean searchMatrix(int[][] matrix, int target) {
 	        int rows = matrix.length;
 	        int cols = matrix[0].length;
@@ -959,6 +994,8 @@ public class ArrayProblems {
 	    {
 	        return cellValue%cols;
 	    }
+	    /*--------------------74. SEARCH A 2D MATRIX------------------------*/
+	    //better solution
 	    public boolean searchMatrix1(int[][] matrix, int target) {
 	    	int row =0;
 	    	int col =  matrix[0].length-1;
@@ -980,9 +1017,9 @@ public class ArrayProblems {
 	    	}
 	    	return false;
 	    }
-	    //derviation: Rotation
+	    /*---------------------48. ROTATE IMAGE----------------------------*/
 	    //i,j => cols-j, i //can be seen from symmetry of matrices
-	    //keep substituing
+	    //keep substituting
 	    //cols-j, i => cols-i, cols-j
 	    //cols-i, cols-j => cols-(cols-j),cols-i => j, cols-i
 	    //j, cols -i => cols -(cols-i), j => i,j rotation is complete
@@ -998,7 +1035,7 @@ public class ArrayProblems {
 	            }
 	        }
 	    }
-	    
+	    /*-------------------18. 4Sum-------------------------------------*/
 	    public List<List<Integer>> fourSum(int[] nums, int target) {
 	    	List<List<Integer>> foursumarray = new ArrayList<List<Integer>>();
 	        int size=nums.length;
@@ -1042,6 +1079,10 @@ public class ArrayProblems {
 	        return foursumarray;
 	    }
 	    
+	    /*----------------------78. SUBSETS-------------------------------*/
+	    //using a DP technique
+	    //num={1,2,3}
+	    //output [3], [1], [2], [1,2,3], [1,3], [2,3], [1,2]
 	    public List<List<Integer>> subsets(int[] nums) {
 			Arrays.sort(nums);
 	        List<List<Integer>> res = new ArrayList<List<Integer>>();
@@ -1128,9 +1169,9 @@ public class ArrayProblems {
             	System.out.println(matrix[i][j]);
             }
         }*/
-		//int[] nums1={1,3,1,1,1};
+		int[] nums1={1,3,5,6};
 		//System.out.println(obj.search1(nums1, 3));
-		//System.out.println(obj.searchInsert(nums1,2));
+		System.out.println(obj.searchInsert(nums1,0));
 		
 		/*int[] nums={0,0,1,1,1,2,2,3,3,3,4,4,4,4,5,5,6,6,6,8,10,10};
 		System.out.println(obj.searchRange(nums,4)[0]);
@@ -1139,8 +1180,8 @@ public class ArrayProblems {
 		//int[][] matrix={{1,2,3},{4,5,6},{7,8,9}};
 		//System.out.println(obj.searchMatrix1(matrix, 2));
 		//obj.rotate(matrix);
-		int[] nums={-3,-2,-1,0,0,1,2,3};
-		System.out.println(obj.fourSum(nums, 0));
+		//int[] nums={-3,-2,-1,0,0,1,2,3};
+		//System.out.println(obj.fourSum(nums, 0));
 //		[[-3,-2,2,3],[-3,-1,1,3],[-3,0,0,3],[-3,0,1,2],[-2,-1,0,3],[-2,-1,1,2],[-2,0,0,2],[-1,0,0,1]]
 	 }
 	
