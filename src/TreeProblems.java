@@ -10,26 +10,33 @@ import java.util.Set;
 
 
 public class TreeProblems {
-	
-	public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+	/*------------235. LOWEST COMMON ANCESTOR OF A BINARY SEARCH TREE----------------*/
+/*		 _______6______
+		/              \
+     ___2__          ___8__
+    /      \        /      \
+    0      _4       7       9
+          /  \
+         3   5
+*/	public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
 		if(root == null)
 		{
 			return null;
 		}
 		else if(p.val < root.val && q.val < root.val)
  		{
-        return lowestCommonAncestor(root.left,p,q);
+			return lowestCommonAncestor(root.left,p,q);
         }
         else if(p.val > root.val && q.val > root.val)
         {
-        return lowestCommonAncestor(root.right,p,q);
+        	return lowestCommonAncestor(root.right,p,q);
         }
         else
         {
-        return root;
+        	return root;
         }
 	}
-	
+	/*-------------------104. MAXIMUM DEPTH OF BINARY TREE----------------------*/
 	public int maxDepth(TreeNode root) {
         if(root == null)
         {
@@ -45,12 +52,18 @@ public class TreeProblems {
             }
             else
             {
-                return rightDepth+1;
+                	return rightDepth+1;
             }
         }
-    
     }
-	
+
+/*-----------------------226. INVERT A BINARY TREE-------------------------------*/	
+/*	 	     4                           4
+	 	   /   \                       /   \
+	 	  7     2          to         2     7
+	 	 / \   / \                   / \   / \
+	 	9   6 3   1                 1   3 6   9
+*/	   
 	public TreeNode invertTree(TreeNode root) {
         
         TreeNode temp = null;
@@ -64,12 +77,15 @@ public class TreeProblems {
         {
               root.left = invertTree(root.left);
               root.right = invertTree(root.right);
+              
+              //swap left and right nodes
               temp = root.left;
               root.left = root.right;
               root.right = temp;
               return root;
         }
     }
+	/*-----------------100. SAME TREE-----------------------*/
 	public boolean isSameTree(TreeNode p, TreeNode q) {
         if(p == null && q == null){
 				return true;
@@ -87,6 +103,7 @@ public class TreeProblems {
 		return false;
 			
     }
+	/*-----------110. BALANCED BINARY TREE------------------*/
 	public boolean isBalanced(TreeNode root) {
         if(root == null)
         {
@@ -124,171 +141,78 @@ public class TreeProblems {
       }
 	}
 	
-	
-	public boolean isSymmetric(TreeNode root) {
-        if(root == null)
-        {
-        	return true;
-        }
-        else
-        {
-        	boolean mirror = false;
-        	boolean value= false;
-        			mirror= checkMirrorValidity(root.left, root.right);
-        			value = checkValueValidity(root.left, root.right);
-        			if(mirror && value)
-        			{
-        				return true;
-        			}
-       }
-        return false;
-    }
-	public boolean checkMirrorValidity(TreeNode left, TreeNode right)
-	{
-		if(left == null && right == null)
+	/*-----------------101. SYMMETRIC TREE-----------------------------*/
+/*	 	1							 1
+	   / \							/ \
+	  2   2		   to			   2   2
+	 / \ / \						\   \
+	3  4 4  3 						3    3
+*/		public boolean isSymmetric(TreeNode root) 
 		{
-			return true;
-		}
-		else
-		{
-			boolean mirrorOpp = false; 
-			boolean mirrorSame = false;
-			
-			if(left!= null && right !=null)
-			{
-				mirrorOpp=checkMirrorValidity(left.right, right.left);
-				mirrorSame=	checkMirrorValidity(left.left, right.right);
-			}
-        	
-        	if(mirrorOpp && mirrorSame)
-        	{
-	        			return true;
-        	}
-	  }
-		return false;
-	}
-	public boolean checkValueValidity(TreeNode left, TreeNode right)
-	{
-		if(left == null && right == null)
-		{
-			return true;
-		}
-		else if(left!=null && right !=null)
-		{
-			if(left.val == right.val)
+			if(root==null)
 			{
 				return true;
 			}
+			//pass one the left and right node
+			return isSymmetric(root.left, root.right);
 		}
-		else
-		{
-			boolean leftVal=false;
-			boolean rightVal=false;
-			if(left!=null && right!=null)
-			{
-					leftVal = checkValueValidity(left.left, right.left);
-					rightVal = checkValueValidity(left.right, right.right);
-				
-			}
-			if(leftVal && rightVal)
-			{
-				return true;
-			}
-		}
-			
-      return false;
-	}
-	
-	public boolean isSymmetric1(TreeNode root) {
-		if(root==null)
-		{
-			return true;
-		}
-		return isSymmetric1(root.left, root.right);
-	}
-	public boolean isSymmetric1(TreeNode node1, TreeNode node2) {
+		public boolean isSymmetric(TreeNode node1, TreeNode node2) {
+		//if both the nodes are null then true
 		if(node1 == null && node2 == null) return true;
+		//if either is one is null then false
 	    if(node1 == null || node2 == null) return false;
 
+	    //check if values, left--right, and right---left are same 
 	    return node1.val == node2.val
-	           &&isSymmetric1(node1.left, node2.right)
-	           && isSymmetric1(node1.right,node2.left);
-	}
+	           &&isSymmetric(node1.left, node2.right)
+	           && isSymmetric(node1.right,node2.left);
+		}
 	
 	
-	
+	/*-----------------112. PATH SUM----------------------------------------*/
 	public boolean hasPathSum(TreeNode root, int sum) {
         if(root == null)
         {
             return false;
         }
+        //if value reaches sum return true
         else if(root.val == sum && root.left == null & root.right == null )
         {
         	return true;
         }
         else
         {
+        	//keep subtracting the sum across left or right path
         	return hasPathSum(root.left, sum -root.val) ||hasPathSum(root.right, sum -root.val);
         }
         
     }
+	/*--------------------236. LOWEST COMMON ANCESTOR of A BINARY TREE-----*/
 	public TreeNode lowestCommonAncestor1(TreeNode root, TreeNode p, TreeNode q) {
-        
-        if(root == null)
-		{
-			return null;
-		}
-        if(root == p)
+		if(root == null  || root==p || root==q)return root;
+		
+		TreeNode left = lowestCommonAncestor1(root.left, p, q);
+	    TreeNode right = lowestCommonAncestor1(root.right, p, q);
+	        
+	    if(left!=null && right!=null)
         {
-        	return p;
+        	return root;
         }
-        if(root == q)
-        {
-        	return q;
-        }
-        TreeNode left = lowestCommonAncestor1(root.left, p, q);
-        TreeNode right = lowestCommonAncestor1(root.right, p, q);
-        
-        if(left == null && right == null)
-        {
-        	return null;
-        }
-        if(left != null && right == null)
+        else if(left!=null && right==null)
         {
         	return left;
         }
-        if(right != null && left == null)
+        else if(left==null && right!=null)
         {
         	return right;
         }
-        return root;
-    }
-	/*public TreeNode lowestCommonAncestor2(TreeNode root, TreeNode p, TreeNode q) {
-        Map<TreeNode, TreeNode> parent = new HashMap<TreeNode, TreeNode>();
-        Deque<TreeNode> stack = new ArrayDeque<TreeNode>();
-        parent.put(root, null);
-        stack.push(root);
-
-        while (!parent.containsKey(p) || !parent.containsKey(q)) {
-            TreeNode node = stack.pop();
-            if (node.left != null) {
-                parent.put(node.left, node);
-                stack.push(node.left);
-            }
-            if (node.right != null) {
-                parent.put(node.right, node);
-                stack.push(node.right);
-            }
+        else if(left==null && right==null)
+        {
+        	return null;
         }
-        Set<TreeNode> ancestors = new HashSet<TreeNode>();
-        while (p != null) {
-            ancestors.add(p);
-            p = parent.get(p);
-        }
-        	while (!ancestors.contains(q))
-        		q = parent.get(q);
-        	return q;
-    }*/
+		return root;
+	}
+	//using an hashmap
 	public TreeNode lowestCommonAncestor2(TreeNode root, TreeNode p, TreeNode q) {
 		Map<TreeNode, TreeNode> lookup = new HashMap<TreeNode, TreeNode>();
 		lookup.put(root,null);
@@ -332,8 +256,10 @@ public class TreeProblems {
 		}
 		return root;
 	}
+	/*-----------------------102. BINARY TREE LEVEL ORDER TRAVERSAL---------------------*/
 	public List<List<Integer>> levelOrder(TreeNode root) {
-        List<List<Integer>> arrays = new ArrayList<List<Integer>>(); 
+        List<List<Integer>> arrays = new ArrayList<List<Integer>>();
+        //use hashmap to store values at a particular level
         Map<Integer,List<Integer>> map = new HashMap<Integer,List<Integer>>();
         if(root!=null)
         {
@@ -377,11 +303,15 @@ public class TreeProblems {
                 levelOrderTraversal(root.right, map, height+1);
       return -1;          
     }
+    
+    /*-------------------------98. VALID BINARY SEARCH TREE-------------------------*/
     public boolean isValidBST(TreeNode root) {
+    	//root, min, max
         return isValidBST(root, null, null);
     }
     public boolean isValidBST(TreeNode root, Integer min, Integer max) {
     	if(root == null)return true;
+    	
     	if(min!=null && root.val<=min) return false;
     	if(max!=null && root.val>=max) return false;
 			
