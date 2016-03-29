@@ -160,7 +160,7 @@ public class StringProblems {
 		return false;
 	}
 	/*--------------------------14. LONGEST COMMON PREFIX----------------------------*/
-	//{"a", "a", "b"} return "a"
+	//{"a", "a", "b"} return ""
 	//{"a","a"} return "a"
 	//{"ac", "ac", "a", "a"} return "a"
 	public String longestCommonPrefix(String[] strs) {
@@ -486,7 +486,7 @@ public class StringProblems {
     	}
         return seq;
     }
-    public int[] updateArray(int len, int row, int numRows)
+   /* public int[] updateArray(int len, int row, int numRows)
     {
     	//get the value to be incremented;
     	int k=row==0||row==numRows-1?(numRows-1)*2:2;
@@ -511,7 +511,7 @@ public class StringProblems {
         }
         
         return array;
-    }
+    }*/
     /*---------------8. STRING TO INTEGER (ATOI)----------------------------*/
     public int myAtoi(String str) {
         
@@ -740,6 +740,8 @@ public class StringProblems {
 	    }
 	    
 	    /*-----------------------93. RESTORE IP ADDRESSES-----------------------------*/
+	    //Given "25525511135",
+	    //return ["255.255.11.135", "255.255.111.35"]
 	    public List<String> restoreIpAddresses(String s) {
 	    	List<String> res=new ArrayList<String>();
 	    	
@@ -1007,10 +1009,10 @@ public class StringProblems {
 		String test2="race a car";
 		
 		System.out.println(obj.alphaNumericValue(test1));
-		System.out.println(obj.isPalindrome1(test1));
+		System.out.println(obj.isPalindrome1(test1));*/
 		
-		String[] arr = {"pot","pottery","potato"};
-		System.out.println(obj.longestCommonPrefix(arr));*/
+		String[] arr = {"a","a","ac"};
+		System.out.println(obj.longestCommonPrefix(arr));
 		//System.out.println(obj.conversionBinaryToDecimal(11));
 		//System.out.println(obj.conversionDecimalToBinary(3));
 		//System.out.println(obj.addBinary1("10100000100100110110010000010101111011011001101110111111111101000000101111001110001111100001101","110101001011101110001111100110001010100001101011101010000011011011001011101111001100000011011110011"));
@@ -1021,7 +1023,7 @@ public class StringProblems {
 		//System.out.println(obj.lengthOfLastWord("a"));
 		//System.out.println(obj.convert("ABCDE", 4));
 		//System.out.println(obj.strStr("abxabcabcaby","abcaby"));
-		System.out.println(obj.multiply1("43","69"));
+		//System.out.println(obj.multiply1("43","69"));
 		//System.out.println(obj.lengthOfLongestSubstring("pwwkew"));
 		//String s=new String("010010");
 		//System.out.println(obj.restoreIpAddresses(s));

@@ -2,30 +2,43 @@ import java.util.HashSet;
 
 
 public class NumberProblems {
-		
-	public boolean canWinNim(int n) {
+	/*-----------------------292. NIM GAME-----------------------------*/
+	public static boolean canWinNim(int n) {
+	    if (n % 4 == 0)
+	        return false;
+	    else
+	        return true;
+	}
+	//worst
+	public boolean canWinNim1(int n) {
         if(n==0){
             return false;
         }
         else if(n==1){
             return true;
         }
-        else if(n>1)
-        {
-            if(n%2 == 1)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+        else if(n==2){
+            return true;
+        }
+        else if(n==3){
+            return true;
+        }
+        else if(n%4 ==0){
+            return false;
+        }
+        else if((n-1)%4 ==0){
+            return true;
+        }
+        else if((n-2)%4 ==0){
+            return true;
+        }
+        else if((n-3)%4 ==0){
+            return true;
         }
         else{
         	return false;
         }
     }
-	
 	public static int hammingWeight(int n) {
 		int bits =0;
 		int i=0;
@@ -41,7 +54,7 @@ public class NumberProblems {
         
         return bits;
     }
-	
+	/*---------------------------70. CLIMBING STAIRS--------------------------------*/
 	public static int climbStairs(int n) {
         int count=0;
        int x=0;
@@ -92,17 +105,22 @@ public class NumberProblems {
 	      	return dp[n];
 	    }
 	 
+	 /*----------------------362. POWER OF THREE--------------------------------*/
 	 public boolean isPowerOfThree(int n) {
 		 double num = Math.log(n)/Math.log(3);
 	        return Math.abs(num - Math.round(num)) <=10e-15;
 	        
 	    }
+	 
 	 //power of three 3^32 1162261467
 	    public boolean isPowerOfThree1(int n) {
 	        return n > 0 && (1162261467 % n == 0);
 	        
 	    }
 	 
+	 /*------------------------------263. UGLY NUMBER------------------------------------*/
+	 //Ugly numbers are positive numbers whose prime factors only include 2, 3, 5. 
+	 //For example, 6, 8 are ugly while 14 is not ugly
 	 public static boolean isUgly(int num) {
 	        if(num == 1)
 	        {
@@ -138,6 +156,7 @@ public class NumberProblems {
 	        }
 	       return flag;
 	    }
+	 /*-----------------------------202. HAPPY NUMBER-------------------------------------*/
 	 public static boolean isHappy(int n) {
 	        
 		 double sum=0;
@@ -182,6 +201,7 @@ public class NumberProblems {
 		    if (n == 1) return true;
 		    else return false;
 	    }
+	 /*-----------------------231. POWER OF TWO-------------------------*/
 	 public static boolean isPowerOfTwo(int n) {
 		 double num = Math.log(n)/Math.log(2);
 	        return Math.abs(num - Math.round(num)) <=10e-15;

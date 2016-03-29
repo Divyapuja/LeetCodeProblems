@@ -10,6 +10,7 @@ import java.util.Set;
 
 public class ArrayProblems {
 	
+	/*----------------283. MOVE ZEROES------------------------*/
 	public void moveZeroes(int[] nums) {
 		int j = 0;
 	    for(int i = 0; i < nums.length; i++) {
@@ -21,7 +22,7 @@ public class ArrayProblems {
 	        }
 	    }
     }
-	
+	/*----------------169. Majority Element------------------------*/
 	public static int majorityElement(int[] nums) {
 	     int elem=0;
 	     int oldVal =0;
@@ -56,6 +57,8 @@ public class ArrayProblems {
 	    Arrays.sort(nums);
 	    return nums[nums.length / 2];
 	}
+	
+	//Moore's Voting Algorithm
 	public int majorityElement2(int[] nums) {
 	    int majority = nums[0], t = 0;
 	    for (int i : nums) {
@@ -174,6 +177,7 @@ public class ArrayProblems {
 		}
 		return false;
 	}
+	//if index is the output required
 	public int[] twoSum1(int[] nums, int target)
 	{
 		int [] array=new int[2];
@@ -190,7 +194,31 @@ public class ArrayProblems {
 		}
 		return array;
 	}
-	
+	//if value is the output required
+	public int[] twoSum2(int[] nums, int target)
+	{
+		int[] array = new int[2];
+		Arrays.sort(nums);
+		int low=0; int high=nums.length-1;
+		while(low<high)
+		{
+			if(nums[low]+nums[high]<target)
+			{
+				low++;
+			}
+			else if(nums[low]+nums[high]>target)
+			{
+				high--;
+			}
+			else
+			{
+				array[0]=nums[low];
+				array[1]=nums[high];
+				break;
+			}
+		}
+		return array;
+	}
 	/*-------------66. PLUS ONE----------------------------------*/
 	public int[] plusOne(int[] digits) {
         if(digits.length>0)
@@ -428,7 +456,6 @@ public class ArrayProblems {
 	        return next;
 	    }
 	    //row k of Pascal's Triangle:
-
 	    //[C(k,0), C(k,1), ..., C(k, k-1), C(k, k)]
 
 	    //and
@@ -443,6 +470,13 @@ public class ArrayProblems {
             }
             return Arrays.asList(rowList);
         }
+	    
+	    public List<Integer> getRow1(int rowIndex) {
+	    	Integer[] rowList = new Integer[rowIndex+1];
+	    	
+	    	
+	        return Arrays.asList(rowList);
+	    }
 	    
 	    /*-------------------219. CONTAINS DUPLICATE II-------------------------------*/
 	    public boolean containsNearbyDuplicate(int[] nums, int k) {
@@ -1126,12 +1160,13 @@ public class ArrayProblems {
 	 public static void main(String args[])
 	 {
 		ArrayProblems obj = new ArrayProblems();
-		//int[] nums={1,2,3,4,5,6,7};
+		int[] nums={2,7,11,15};
 		//obj.moveZeroes(nums);
-		//System.out.println(obj.majorityElement(nums));
+		//System.out.println(obj.majorityElement2(nums));
 		//System.out.println(obj.containsDuplicate2(nums));
 		//System.out.println(obj.twoSum1(nums,9)[0]);
 		//System.out.println(obj.twoSum1(nums,9)[1]);
+		System.out.println(obj.twoSum2(nums,9)[0]);
 		//int[] digits={8,9,9};
 		//System.out.println(obj.plusOne(digits)[0]);
 		
@@ -1169,9 +1204,9 @@ public class ArrayProblems {
             	System.out.println(matrix[i][j]);
             }
         }*/
-		int[] nums1={1,3,5,6};
+		//int[] nums1={1,3,5,6};
 		//System.out.println(obj.search1(nums1, 3));
-		System.out.println(obj.searchInsert(nums1,0));
+		//System.out.println(obj.searchInsert(nums1,0));
 		
 		/*int[] nums={0,0,1,1,1,2,2,3,3,3,4,4,4,4,5,5,6,6,6,8,10,10};
 		System.out.println(obj.searchRange(nums,4)[0]);
